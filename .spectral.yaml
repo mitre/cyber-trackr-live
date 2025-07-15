@@ -1,0 +1,128 @@
+# Spectral ruleset for cyber.trackr.live OpenAPI specification
+# Based on OpenAPI 3.1 best practices and community standards
+
+extends: ["spectral:oas", "spectral:asyncapi"]
+
+rules:
+  # OpenAPI 3.1 specific rules
+  oas3-valid-content-types:
+    description: Content types should be valid
+    given: "$.paths[*][*].requestBody.content[*]~"
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(application|text|image|audio|video|multipart)\/[a-zA-Z0-9][a-zA-Z0-9!#$&\-\^_]*$"
+
+  # API design best practices
+  operation-description:
+    description: Operation should have meaningful description
+    given: "$.paths[*][*]"
+    severity: warn
+    then:
+      field: description
+      function: truthy
+
+  operation-summary:
+    description: Operation should have concise summary
+    given: "$.paths[*][*]"
+    severity: warn
+    then:
+      field: summary
+      function: truthy
+
+  operation-tags:
+    description: Operation should be tagged for organization
+    given: "$.paths[*][*]"
+    severity: warn
+    then:
+      field: tags
+      function: truthy
+
+  # Parameter validation
+  path-params-defined:
+    description: Path parameters must be defined in parameters
+    given: "$.paths[*][*].parameters[?(@.in == 'path')]"
+    severity: error
+    then:
+      field: schema
+      function: truthy
+
+  # Schema best practices
+  schema-properties-define-example:
+    description: Schema properties should have examples
+    given: "$.components.schemas[*].properties[*]"
+    severity: info
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: ["example"]
+            - required: ["examples"]
+
+  # Security and documentation
+  info-description-length:
+    description: Info description should be comprehensive
+    given: "$.info.description"
+    severity: warn
+    then:
+      function: length
+      functionOptions:
+        min: 100
+
+  contact-properties:
+    description: Contact should have name and URL
+    given: "$.info.contact"
+    severity: info
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: ["name", "url"]
+
+  # Response validation
+  response-success-schema:
+    description: Success responses should have schema
+    given: "$.paths[*][*].responses[?(@property >= '200' && @property < '300')]"
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: ["content"]
+
+  # Custom rules for DISA ecosystem
+  disa-id-patterns:
+    description: DISA ID parameters should follow correct patterns
+    given: "$.components.parameters[*].schema"
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          if:
+            properties:
+              pattern:
+                type: string
+          then:
+            properties:
+              pattern:
+                pattern: "^\\^.*\\$$"  # Patterns should be anchored
+
+  # Cyber trackr specific validations
+  cyber-trackr-examples:
+    description: Examples should reflect real API responses
+    given: "$.paths[*][*].responses.200.content.application/json.examples[*]"
+    severity: info
+    then:
+      function: truthy
+
+# Disable some rules that don't apply to this readonly API
+overrides:
+  - files: ["**"]
+    rules:
+      oas3-api-servers: false  # We document external API, not our own
+      operation-operationId: info  # Not critical for documentation

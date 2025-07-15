@@ -1,0 +1,20 @@
+{
+  "theme": "purple",
+  "layout": "modern",
+  "searchHotkey": "k",
+  "darkMode": true,
+  "hideModels": false,
+  "hiddenClients": [],
+  "customCss": "",
+  "metadata": {
+    "title": "Cyber Trackr API Documentation",
+    "description": "Complete API documentation for cyber.trackr.live - Access DISA STIGs, SRGs, RMF controls, CCIs, and SCAP data",
+    "ogImage": "https://cyber.trackr.live/api-og-image.png"
+  },
+  "servers": [
+    {
+      "url": "https://cyber.trackr.live/api",
+      "description": "Production API"
+    }
+  ]
+}

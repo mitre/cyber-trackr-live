@@ -1,0 +1,11 @@
+--no-private
+--markup markdown
+--output-dir docs/api
+--readme README-GEM.md
+lib/cyber_trackr_helper.rb
+lib/cyber_trackr_helper/**/*.rb
+lib/rubocop/**/*.rb
+-
+README-GEM.md
+LICENSE.md
+CHANGELOG-GEM.md
