@@ -225,11 +225,68 @@ Use GitHub Issues with:
    - Versions are bumped during release process
    - If you modified `openapi/openapi.yaml`, regenerate client
 
+## 🌍 Cross-Platform Development
+
+This gem supports multiple platforms and architectures:
+
+### Supported Platforms
+- **Linux**: x86_64, aarch64 (ARM), musl (Alpine)
+- **macOS**: Intel (x86_64), ARM (arm64)
+- **Windows**: x64 (mingw-ucrt)
+- **Ruby**: Generic Ruby platform
+
+### Adding Platform Support
+
+When adding new dependencies that have native extensions, update `Gemfile.lock` for all platforms:
+
+```bash
+# Add common platforms
+bundle lock --add-platform x86_64-linux
+bundle lock --add-platform x86_64-darwin
+bundle lock --add-platform arm64-darwin-24
+bundle lock --add-platform x64-mingw-ucrt
+bundle lock --add-platform aarch64-linux
+bundle lock --add-platform x86_64-linux-musl
+bundle lock --add-platform ruby
+
+# Verify all platforms are present
+grep -A 10 "PLATFORMS" Gemfile.lock
+```
+
+### CI/CD Testing Matrix
+
+Our CI tests across multiple platforms and Ruby versions:
+
+```yaml
+strategy:
+  matrix:
+    os: [ubuntu-latest, windows-latest, macos-latest]
+    ruby-version: ['3.1', '3.2', '3.3']
+```
+
+This ensures the gem works correctly across all supported environments.
+
+### Platform-Specific Issues
+
+Common issues and solutions:
+
+**Bundle installation fails on CI:**
+```bash
+# Error: "Your bundle only supports platforms ['arm64-darwin-24'] but your local platform is x86_64-linux"
+# Solution: Add the missing platform to Gemfile.lock
+bundle lock --add-platform x86_64-linux
+```
+
+**Native extension compilation fails:**
+- Check if the gem has platform-specific versions
+- Ensure all required platforms are in Gemfile.lock
+- Update gem to a version that supports the target platform
+
 ## 🚦 CI/CD Pipeline
 
 All PRs must pass:
 
-- **Unit Tests** - Ruby tests must pass
+- **Unit Tests** - Ruby tests must pass on Linux, macOS, and Windows
 - **Linting** - RuboCop with no violations
 - **OpenAPI Validation** - Spec must be valid
 - **Security Checks** - No vulnerable dependencies
