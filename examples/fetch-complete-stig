@@ -1,0 +1,174 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'json'
+require 'net/http'
+require 'uri'
+require 'fileutils'
+require 'optparse'
+require 'logger'
+
+# Script to fetch complete STIG data with all control details
+class CompleteStigFetcher
+  BASE_URL = 'https://cyber.trackr.live'
+  RATE_LIMIT_DELAY = 0.1 # 100ms between requests
+
+  def initialize(logger: Logger.new($stdout))
+    @logger = logger
+  end
+
+  def fetch_complete_stig(input_file, output_file = nil)
+    @logger.info "Loading STIG from: #{input_file}"
+    
+    # Load the base STIG file
+    stig_data = JSON.parse(File.read(input_file))
+    
+    # Determine output filename
+    output_file ||= input_file.sub('.json', '_complete.json')
+    
+    # Check if we have requirements to process
+    unless stig_data['requirements']
+      @logger.warn "No requirements found in STIG file"
+      return
+    end
+    
+    @logger.info "Found #{stig_data['requirements'].size} controls to fetch"
+    
+    # Fetch detailed data for each control
+    completed_controls = []
+    failed_controls = []
+    
+    stig_data['requirements'].each_with_index do |control, index|
+      @logger.info "[#{index + 1}/#{stig_data['requirements'].size}] Fetching control #{control['id']}"
+      
+      begin
+        # Fetch detailed control data
+        detailed_control = fetch_control_details(control)
+        
+        # Merge the detailed data with the base control
+        completed_control = control.merge(detailed_control)
+        completed_controls << completed_control
+        
+        # Rate limiting
+        sleep RATE_LIMIT_DELAY
+      rescue => e
+        @logger.error "Failed to fetch control #{control['id']}: #{e.message}"
+        failed_controls << control['id']
+        # Keep the original control data even if fetch fails
+        completed_controls << control
+      end
+    end
+    
+    # Update the STIG data with complete controls
+    complete_stig = stig_data.dup
+    complete_stig['requirements'] = completed_controls
+    complete_stig['_metadata'] = {
+      'fetched_at' => Time.now.utc.iso8601,
+      'total_controls' => stig_data['requirements'].size,
+      'successfully_fetched' => stig_data['requirements'].size - failed_controls.size,
+      'failed_controls' => failed_controls
+    }
+    
+    # Write the complete STIG file
+    @logger.info "Writing complete STIG to: #{output_file}"
+    File.write(output_file, JSON.pretty_generate(complete_stig))
+    
+    # Summary
+    @logger.info "Complete! Fetched #{stig_data['requirements'].size - failed_controls.size}/#{stig_data['requirements'].size} controls"
+    @logger.warn "Failed to fetch #{failed_controls.size} controls: #{failed_controls.join(', ')}" unless failed_controls.empty?
+    
+    output_file
+  end
+
+  private
+
+  def fetch_control_details(control)
+    return {} unless control['link']
+    
+    uri = URI.join(BASE_URL, control['link'])
+    
+    response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      request = Net::HTTP::Get.new(uri)
+      request['Accept'] = 'application/json'
+      http.request(request)
+    end
+    
+    if response.code == '200'
+      control_data = JSON.parse(response.body)
+      
+      # Map the actual API response fields to our expected structure
+      {
+        'title' => control_data['requirement-title'],
+        'description' => control_data['requirement-description'],
+        'check_text' => control_data['check-text'],
+        'fix_text' => control_data['fix-text'],
+        'severity' => control_data['severity'],
+        'version' => control_data['version'],
+        'rule' => control_data['rule'],
+        'group' => control_data['group'],
+        'check_id' => control_data['check-id'],
+        'fix_id' => control_data['fix-id'],
+        'identifiers' => control_data['identifiers'],
+        'mitigation_statement' => control_data['mitigation-statement']
+      }.compact
+    else
+      raise "HTTP #{response.code}: #{response.message}"
+    end
+  end
+end
+
+# CLI interface
+if __FILE__ == $0
+  options = {
+    output: nil,
+    verbose: false
+  }
+
+  OptionParser.new do |opts|
+    opts.banner = "Usage: fetch-complete-stig [options] <stig_file>"
+    
+    opts.on("-o", "--output FILE", "Output file (default: <input>_complete.json)") do |o|
+      options[:output] = o
+    end
+    
+    opts.on("-v", "--verbose", "Verbose output") do
+      options[:verbose] = true
+    end
+    
+    opts.on("-h", "--help", "Show this help") do
+      puts opts
+      exit
+    end
+  end.parse!
+
+  if ARGV.empty?
+    puts "Error: Please specify a STIG JSON file"
+    puts "Usage: fetch-complete-stig <stig_file>"
+    exit 1
+  end
+
+  input_file = ARGV[0]
+  
+  unless File.exist?(input_file)
+    puts "Error: File not found: #{input_file}"
+    exit 1
+  end
+
+  # Set up logger
+  logger = Logger.new($stdout)
+  logger.level = options[:verbose] ? Logger::DEBUG : Logger::INFO
+  logger.formatter = proc do |severity, datetime, progname, msg|
+    "#{severity}: #{msg}\n"
+  end
+
+  # Fetch the complete STIG
+  fetcher = CompleteStigFetcher.new(logger: logger)
+  begin
+    output_file = fetcher.fetch_complete_stig(input_file, options[:output])
+    puts "\nComplete STIG saved to: #{output_file}"
+  rescue => e
+    logger.error "Failed to fetch complete STIG: #{e.message}"
+    exit 1
+  end
+end

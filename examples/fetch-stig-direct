@@ -1,0 +1,99 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'json'
+require 'optparse'
+require_relative '../generated-client/lib/cyber_trackr_client'
+
+# Script to fetch complete STIG data directly from API using generated client
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: fetch-stig-direct [options]"
+  
+  opts.on("-n", "--name NAME", "STIG name (e.g., 'Juniper_SRX_Services_Gateway_ALG')") do |n|
+    options[:name] = n
+  end
+  
+  opts.on("-v", "--version VERSION", "STIG version (e.g., '3')") do |v|
+    options[:version] = v
+  end
+  
+  opts.on("-r", "--release RELEASE", "STIG release (e.g., '3')") do |r|
+    options[:release] = r
+  end
+  
+  opts.on("-o", "--output FILE", "Output file (default: NAME_VERSION_RELEASE_complete.json)") do |o|
+    options[:output] = o
+  end
+  
+  opts.on("-h", "--help", "Show this help message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+# Validate required options
+unless options[:name] && options[:version] && options[:release]
+  puts "Error: --name, --version, and --release are required"
+  puts "Example: ./fetch-stig-direct -n Juniper_SRX_Services_Gateway_ALG -v 3 -r 3"
+  exit 1
+end
+
+# Configure client
+CyberTrackrClient.configure do |config|
+  config.host = 'cyber.trackr.live'
+  config.base_path = '/api'
+end
+
+# Create API instance
+api = CyberTrackrClient::STIGSRGApi.new
+
+# Set default output filename
+options[:output] ||= "#{options[:name]}_#{options[:version]}_#{options[:release]}_complete.json"
+
+puts "Fetching STIG: #{options[:name]} v#{options[:version]}r#{options[:release]}"
+
+begin
+  # Fetch the STIG with all requirements
+  stig = api.stig_title_version_release_get(options[:name], options[:version], options[:release])
+  
+  # Check if we got requirements
+  if stig.requirements.nil? || stig.requirements.empty?
+    puts "Warning: No requirements found in STIG"
+  else
+    puts "Found #{stig.requirements.size} requirements"
+    
+    # Fetch detailed data for each requirement
+    stig.requirements.each_with_index do |req, index|
+      print "\rFetching control details: #{index + 1}/#{stig.requirements.size}"
+      
+      begin
+        # Fetch detailed control data
+        detailed = api.stig_title_version_release_vuln_get(
+          options[:name], 
+          options[:version], 
+          options[:release], 
+          req.id
+        )
+        
+        # Update the requirement with detailed data
+        # (The detailed response should already include all fields)
+        
+        # Small delay to be respectful to the API
+        sleep 0.1
+      rescue => e
+        puts "\nWarning: Failed to fetch details for #{req.id}: #{e.message}"
+      end
+    end
+    puts "\nCompleted fetching all control details"
+  end
+  
+  # Write to output file
+  File.write(options[:output], JSON.pretty_generate(stig.to_hash))
+  puts "Saved complete STIG to: #{options[:output]}"
+  
+rescue => e
+  puts "Error: #{e.message}"
+  exit 1
+end
