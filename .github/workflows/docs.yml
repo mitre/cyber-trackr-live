@@ -1,0 +1,80 @@
+name: Documentation
+
+# This workflow automatically builds and deploys documentation
+# - On every push to main (including docs-only changes)
+# - On pull requests (build only, no deploy)
+# - Manual trigger via workflow_dispatch
+#
+# To update docs without releasing gem:
+# 1. Make documentation changes
+# 2. Commit with message like "docs: update installation guide"
+# 3. Push to main - docs will auto-deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Build OpenAPI documentation
+        run: |
+          mkdir -p site
+          npm run docs:build -- --output site/index.html
+          
+      - name: Build and integrate YARD API documentation
+        run: |
+          bundle exec yard doc --output-dir site/api --no-private
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
