@@ -9,6 +9,11 @@ debug_*.rb
 .env.*
 !.env.example
 
+# AI session files (internal development context)
+SESSION*.md
+RECOVERY*.md
+NEXT_SESSION*.md
+
 # Generated client (if we decide to exclude it)
 # generated-client/
 
