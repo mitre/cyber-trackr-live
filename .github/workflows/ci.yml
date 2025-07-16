@@ -34,7 +34,10 @@ jobs:
     - name: Install libcurl on Windows
       if: matrix.os == 'windows-latest'
       run: |
-        choco install curl --force --no-progress
+        # Install libcurl via msys2 (already available in Windows runners)
+        C:/msys64/usr/bin/pacman -S --noconfirm mingw-w64-ucrt-x86_64-curl
+        # Add msys2 bin to PATH for this step
+        echo "C:/msys64/ucrt64/bin" >> $GITHUB_PATH
         
     - name: Run tests
       run: |
