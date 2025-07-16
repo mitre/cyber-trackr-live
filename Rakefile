@@ -25,7 +25,8 @@ Rake::TestTask.new('test:stage1') do |t|
   t.test_files = FileList[
     'test/openapi_validation_test.rb',
     'test/spec_completeness_test.rb',
-    'test/comprehensive_openapi_test.rb'
+    'test/comprehensive_openapi_test.rb',
+    'test/windows_compatibility_test.rb'
   ]
   t.verbose = true
   t.warning = false

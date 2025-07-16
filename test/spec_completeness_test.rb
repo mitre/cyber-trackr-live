@@ -10,7 +10,7 @@ class SpecCompletenessTest < Minitest::Test
     @spec_file = 'openapi/openapi.yaml'
     # Load file content directly to avoid Windows path issues
     contents = YAML.load_file(@spec_file)
-    @definition = OpenapiFirst.parse(contents)
+    @definition = OpenapiFirst.parse(contents, filepath: nil)
     @spec = @definition.instance_variable_get(:@resolved)
   end
 
