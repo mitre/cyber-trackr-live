@@ -4,6 +4,7 @@
 require 'minitest/autorun'
 require 'openapi_first'
 require 'yaml'
+require_relative '../lib/openapi_first_windows_fix'
 
 class WindowsCompatibilityTest < Minitest::Test
   def setup

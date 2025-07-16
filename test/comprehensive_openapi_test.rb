@@ -6,6 +6,7 @@ require 'openapi_first'
 require 'faraday'
 require 'json'
 require 'yaml'
+require_relative '../lib/openapi_first_windows_fix'
 
 class ComprehensiveOpenAPITest < Minitest::Test
   def setup
