@@ -18,7 +18,7 @@ class LiveAPIValidationTest < Minitest::Test
   public
 
   def setup
-    @spec_file = File.join(File.dirname(__FILE__), '..', 'openapi', 'openapi.yaml')
+    @spec_file = File.expand_path('../openapi/openapi.yaml', __dir__)
     @definition = OpenapiFirst.load(@spec_file)
     @spec = @definition.instance_variable_get(:@resolved)
     @base_url = 'https://cyber.trackr.live'
