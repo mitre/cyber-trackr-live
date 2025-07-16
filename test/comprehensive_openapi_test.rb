@@ -5,11 +5,10 @@ require 'minitest/autorun'
 require 'openapi_first'
 require 'faraday'
 require 'json'
-require 'pathname'
 
 class ComprehensiveOpenAPITest < Minitest::Test
   def setup
-    @spec_file = Pathname(__dir__).parent.join('openapi', 'openapi.yaml').to_s
+    @spec_file = 'openapi/openapi.yaml'
     @definition = OpenapiFirst.load(@spec_file)
     @spec = @definition.instance_variable_get(:@resolved)
     @base_url = 'https://cyber.trackr.live/api'

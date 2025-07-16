@@ -6,7 +6,6 @@ require 'openapi_first'
 require 'faraday'
 require 'faraday/follow_redirects'
 require 'json'
-require 'pathname'
 
 class LiveAPIValidationTest < Minitest::Test
   private
@@ -19,7 +18,7 @@ class LiveAPIValidationTest < Minitest::Test
   public
 
   def setup
-    @spec_file = Pathname(__dir__).parent.join('openapi', 'openapi.yaml').to_s
+    @spec_file = 'openapi/openapi.yaml'
     @definition = OpenapiFirst.load(@spec_file)
     @spec = @definition.instance_variable_get(:@resolved)
     @base_url = 'https://cyber.trackr.live'
