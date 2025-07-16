@@ -60,7 +60,6 @@ jobs:
           
       - name: Build and integrate YARD API documentation
         run: |
-          bundle install --with development
           bundle exec yard doc --output-dir site/api --no-private
           
       - name: Upload artifact

@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
 
   # Runtime dependencies
   spec.add_dependency 'typhoeus', '~> 1.4'
+  spec.add_dependency 'yard', '~> 0.9'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.0'
@@ -48,5 +49,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 1.0'
   spec.add_development_dependency 'simplecov', '~> 0.22'
   spec.add_development_dependency 'webmock', '~> 3.0'
-  spec.add_development_dependency 'yard', '~> 0.9'
 end

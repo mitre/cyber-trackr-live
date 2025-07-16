@@ -12,6 +12,9 @@ gem 'faraday-follow_redirects', '~> 0.3'
 # Generated client dependencies
 gem 'typhoeus', '~> 1.0'
 
+# Documentation generation
+gem 'yard', '~> 0.9'
+
 # Development tools
 group :development, :test do
   gem 'minitest', '~> 5.0'

@@ -178,7 +178,7 @@ module CyberTrackrHelper
     end
 
     # Batch download multiple STIGs
-    # @param stig_list [Array<Hash>] Array of {name:, version:, release:} hashes
+    # @param stig_list [Array<Hash>] Array of hashes with :name, :version, :release keys
     # @param output_dir [String] Directory to save files
     # @param delay [Float] Delay between downloads
     # @yield [index, total, name] Progress callback
