@@ -22,7 +22,7 @@ bundle exec rake test:all  # All tests including integration
 
 ### Prerequisites
 
-- Ruby 3.3+ (check `.ruby-version`)
+- Ruby 3.2+ (check `.ruby-version`)
 - Node.js 22+ (check `.nvmrc`) - optional, only for OpenAPI docs
 - Docker (for client generation)
 
@@ -52,15 +52,14 @@ The OpenAPI spec is the source of truth for the API documentation and client gen
 vi openapi/openapi.yaml
 
 # 2. Validate your changes
-bundle exec rake test:openapi
-spectral lint openapi/openapi.yaml
+npm run docs:validate
 
 # 3. Preview the docs
 npm run docs:dev
 # Opens at http://localhost:4000
 
-# 4. Regenerate the Ruby client
-make generate
+# 4. Regenerate the Ruby client (if needed)
+./scripts/generate_client.sh
 
 # 5. Run tests to ensure compatibility
 bundle exec rake test
@@ -103,17 +102,16 @@ client.list_stigs
 #### Testing
 
 ```bash
+# OpenAPI validation (Node.js/Spectral)
+npm run docs:validate
+
+# Ruby testing
+bundle exec rake test           # Core gem tests (fast - default)
+bundle exec rake test:all       # All tests including live API
+bundle exec rake test:stage2b   # Live API integration only
+
 # Run specific test file
-bundle exec ruby test/content_type_fix_test.rb
-
-# Run all unit tests
-bundle exec rake test:unit
-
-# Run integration tests (requires API access)
-bundle exec rake test:integration
-
-# Generate coverage report
-bundle exec rake coverage
+bundle exec ruby test/cyber_trackr_helper_test.rb
 ```
 
 ### Documentation Development
@@ -146,18 +144,32 @@ vi lib/cyber_trackr_helper.rb  # Add YARD comments
 
 ## 🧪 Testing Guidelines
 
+### Test Architecture
+
+We use a **two-tier testing approach** with clear separation of concerns:
+
+```
+┌─────────────────┐    ┌─────────────────┐
+│   Spectral      │    │ Ruby Testing    │
+│   (Node.js)     │    │                 │
+│ • OpenAPI 3.1   │    │ • Core gem      │
+│ • Syntax valid  │    │ • Helper methods│
+│ • Best practice │    │ • Live API      │
+│ • Custom rules  │    │ • Integration   │
+│ • DISA patterns │    │ • Business logic│
+└─────────────────┘    └─────────────────┘
+        │                       │
+        ▼                       ▼
+   Static Analysis        Dynamic Testing
+   (Spec Quality)         (Live API)
+```
+
 ### Test Structure
 
 ```
 test/
-├── unit/                    # Fast, isolated tests
-│   ├── content_type_fix_test.rb
-│   └── cyber_trackr_helper_test.rb
-├── openapi/                # OpenAPI validation
-│   ├── openapi_validation_test.rb
-│   └── spec_completeness_test.rb
-└── integration/            # Live API tests
-    └── live_integration_test.rb
+├── cyber_trackr_helper_test.rb  # Core gem functionality
+└── live_api_validation_test.rb  # Live API integration
 ```
 
 ### Writing Tests
@@ -213,9 +225,9 @@ Use GitHub Issues with:
 4. **Update docs** as needed
 5. **Run all checks**:
    ```bash
-   bundle exec rake test
-   bundle exec rubocop
-   bundle exec rake test:openapi
+   npm run docs:validate      # OpenAPI validation
+   bundle exec rake test      # Ruby tests  
+   bundle exec rubocop        # Code style
    ```
 6. **Update changelogs**:
    - `CHANGELOG-GEM.md` for Ruby changes
@@ -261,7 +273,7 @@ Our CI tests across multiple platforms and Ruby versions:
 strategy:
   matrix:
     os: [ubuntu-latest, windows-latest, macos-latest]
-    ruby-version: ['3.1', '3.2', '3.3']
+    ruby-version: ['3.2', '3.3', '3.4']
 ```
 
 This ensures the gem works correctly across all supported environments.
@@ -281,6 +293,31 @@ bundle lock --add-platform x86_64-linux
 - Check if the gem has platform-specific versions
 - Ensure all required platforms are in Gemfile.lock
 - Update gem to a version that supports the target platform
+
+### HTTP Client Architecture
+
+This project uses **Faraday** as the HTTP client for maximum compatibility:
+
+```ruby
+# ✅ Good - Uses Faraday (built into Ruby)
+gem 'faraday', '~> 2.0'
+gem 'faraday-multipart', '~> 1.0'
+
+# ❌ Avoided - typhoeus (requires libcurl.dll on Windows)
+# gem 'typhoeus'
+```
+
+**Benefits of Faraday:**
+- **No external dependencies** - Pure Ruby using Net::HTTP
+- **Windows compatible** - No libcurl.dll required
+- **Widely adopted** - More stable and mature
+- **Consistent** - Same HTTP client used in tests and generated client
+
+**OpenAPI Client Generation:**
+The generated client uses Faraday via the `--library=faraday` flag:
+```bash
+./scripts/generate_client.sh  # Automatically uses Faraday
+```
 
 ## 🚦 CI/CD Pipeline
 

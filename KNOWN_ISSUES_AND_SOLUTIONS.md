@@ -2,7 +2,7 @@
 
 ## ✅ RESOLVED: text/html Content-Type with JSON Body
 
-**Status**: **FIXED** as of July 2024 - The API owner (Robert Weber) has fixed the server configuration.
+**Status**: **FIXED** as of July 2024 - The API maintainer has fixed the server configuration.
 
 **Previous Problem**: Some endpoints returned `Content-Type: text/html` for JSON responses.
 
