@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'openapi3_parser'
+require 'openapi_first'
 require 'faraday'
 require 'faraday/follow_redirects'
 require 'json'
@@ -19,7 +19,8 @@ class LiveAPIValidationTest < Minitest::Test
 
   def setup
     @spec_file = File.join(File.dirname(__FILE__), '..', 'openapi', 'openapi.yaml')
-    @document = Openapi3Parser.load_file(@spec_file)
+    @definition = OpenapiFirst.load(@spec_file)
+    @spec = @definition.instance_variable_get(:@resolved)
     @base_url = 'https://cyber.trackr.live'
     @client = Faraday.new(url: @base_url) do |f|
       f.headers['Accept'] = 'application/json'
@@ -147,34 +148,33 @@ class LiveAPIValidationTest < Minitest::Test
 
   def test_specific_requirement
     # Get a specific requirement
-    begin
-      response = @client.get('/api/stig/Juniper_SRX_Services_Gateway_ALG/3/3/V-214518')
 
-      if response.status == 200
-        req = parse_response(response)
-        puts "\n[test_specific_requirement] Requirement V-214518 Details:"
-        puts "  Title: #{req['requirement-title'][0..60]}..." if req['requirement-title']
-        puts "  Severity: #{req['severity']}"
-        puts "  Rule: #{req['rule']}"
-        puts "  Has check-text: #{!req['check-text'].nil?}"
-        puts "  Has fix-text: #{!req['fix-text'].nil?}"
+    response = @client.get('/api/stig/Juniper_SRX_Services_Gateway_ALG/3/3/V-214518')
 
-        # Verify required fields
-        assert req['id'], 'Requirement should have id'
-        assert req['severity'], 'Requirement should have severity'
-        assert req['check-text'], 'Requirement should have check-text'
-        assert req['fix-text'], 'Requirement should have fix-text'
-      else
-        puts "\nWarning: Requirement lookup returned #{response.status}"
-      end
-    rescue Faraday::ParsingError, JSON::ParserError => e
-      # Known issue: API returns invalid JSON with control characters
-      skip "Skipping due to API JSON parsing issue: #{e.message[0..100]}..."
-    rescue => e
-      # Log other errors but don't fail the test suite
-      puts "⚠️  Warning: Live API test failed with: #{e.class}: #{e.message}"
-      skip "Live API test failed: #{e.message}"
+    if response.status == 200
+      req = parse_response(response)
+      puts "\n[test_specific_requirement] Requirement V-214518 Details:"
+      puts "  Title: #{req['requirement-title'][0..60]}..." if req['requirement-title']
+      puts "  Severity: #{req['severity']}"
+      puts "  Rule: #{req['rule']}"
+      puts "  Has check-text: #{!req['check-text'].nil?}"
+      puts "  Has fix-text: #{!req['fix-text'].nil?}"
+
+      # Verify required fields
+      assert req['id'], 'Requirement should have id'
+      assert req['severity'], 'Requirement should have severity'
+      assert req['check-text'], 'Requirement should have check-text'
+      assert req['fix-text'], 'Requirement should have fix-text'
+    else
+      puts "\nWarning: Requirement lookup returned #{response.status}"
     end
+  rescue Faraday::ParsingError, JSON::ParserError => e
+    # Known issue: API returns invalid JSON with control characters
+    skip "Skipping due to API JSON parsing issue: #{e.message[0..100]}..."
+  rescue StandardError => e
+    # Log other errors but don't fail the test suite
+    puts "⚠️  Warning: Live API test failed with: #{e.class}: #{e.message}"
+    skip "Live API test failed: #{e.message}"
   end
 
   def test_scap_endpoints_exist

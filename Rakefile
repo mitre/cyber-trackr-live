@@ -45,18 +45,18 @@ end
 desc 'Run live integration tests (makes real HTTP calls)'
 task 'test:stage2b' do
   puts '🌐 Running live integration tests...'
-  
+
   # Run each integration test separately to avoid WebMock conflicts
   live_tests = [
     'test/live_api_validation_test.rb',
     'test/integration/live_integration_test.rb'
   ]
-  
+
   live_tests.each do |test_file|
     puts "   Running #{test_file}..."
     system("bundle exec ruby -I\"lib\" #{test_file}") or abort("❌ Live integration test failed: #{test_file}")
   end
-  
+
   puts '✅ Live integration tests completed'
 end
 
@@ -65,7 +65,7 @@ desc 'Run two-stage testing pattern (Stage 1: fast validation, Stage 2: integrat
 task 'test:two_stage' do
   puts '🚀 Starting Two-Stage Testing Pattern'
   puts ''
-  
+
   # Stage 1: Fast validation (no gem build needed)
   puts '📋 Stage 1: Fast Validation Tests'
   puts '   - OpenAPI specification validation'
@@ -73,30 +73,30 @@ task 'test:two_stage' do
   puts '   - Comprehensive OpenAPI tests'
   puts '   - Content-Type fix validation'
   puts ''
-  
+
   Rake::Task['test:stage1'].invoke
   puts '✅ Stage 1 tests passed!'
   puts ''
-  
+
   # Stage 2: Integration tests (requires building local gem)
   puts '📦 Stage 2: Integration Tests (with local gem)'
   puts '   - Building local gem for testing...'
-  
+
   # Build local gem
   system('gem build cyber_trackr_live.gemspec') or abort('❌ Failed to build gem for Stage 2 testing')
   puts '   ✅ Local gem built successfully'
-  
+
   puts '   - Running Stage 2A: Helper tests (with mocking)...'
   Rake::Task['test:stage2a'].invoke
   puts '   ✅ Stage 2A: Helper tests passed!'
-  
+
   puts '   - Running Stage 2B: Live integration tests (real HTTP calls)...'
   Rake::Task['test:stage2b'].invoke
   puts '   ✅ Stage 2B: Live integration tests passed!'
-  
+
   puts '✅ Stage 2 tests completed!'
   puts ''
-  
+
   # Cleanup
   Dir.glob('cyber_trackr_live-*.gem').each { |f| File.delete(f) }
   puts '🧹 Cleaned up test artifacts'
@@ -122,12 +122,49 @@ task 'test:openapi' => 'test:stage1'
 task 'test:integration' => 'test:stage2b'
 task 'test:stage2' => ['test:stage2a', 'test:stage2b']
 
-# All tests including integration
-Rake::TestTask.new('test:all') do |t|
-  t.libs.push 'lib'
-  t.test_files = FileList['test/**/*_test.rb']
-  t.verbose = true
-  t.warning = false
+# All tests including integration - run in separate processes to avoid WebMock conflicts
+desc 'Run all tests (Stage 1, Stage 2A with WebMock, Stage 2B without WebMock)'
+task 'test:all' do
+  puts '🚀 Running all tests in separate processes to avoid WebMock conflicts'
+  puts ''
+
+  # Stage 1: OpenAPI validation tests (no WebMock needed)
+  puts '📋 Stage 1: OpenAPI Validation Tests'
+  stage1_tests = [
+    'test/openapi_validation_test.rb',
+    'test/spec_completeness_test.rb',
+    'test/comprehensive_openapi_test.rb'
+  ]
+
+  stage1_tests.each do |test_file|
+    puts "   Running #{test_file}..."
+    system("bundle exec ruby -I\"lib\" #{test_file}") or abort("❌ Stage 1 test failed: #{test_file}")
+  end
+  puts '✅ Stage 1 tests passed!'
+  puts ''
+
+  # Stage 2A: Helper tests (with WebMock)
+  puts '📦 Stage 2A: Helper Tests (with WebMock)'
+  puts '   Running test/cyber_trackr_helper_test.rb...'
+  system('bundle exec ruby -I"lib" test/cyber_trackr_helper_test.rb') or abort('❌ Stage 2A test failed: test/cyber_trackr_helper_test.rb')
+  puts '✅ Stage 2A tests passed!'
+  puts ''
+
+  # Stage 2B: Live integration tests (without WebMock)
+  puts '🌐 Stage 2B: Live Integration Tests (without WebMock)'
+  live_tests = [
+    'test/live_api_validation_test.rb',
+    'test/integration/live_integration_test.rb'
+  ]
+
+  live_tests.each do |test_file|
+    puts "   Running #{test_file}..."
+    system("bundle exec ruby -I\"lib\" #{test_file}") or abort("❌ Stage 2B test failed: #{test_file}")
+  end
+  puts '✅ Stage 2B tests passed!'
+  puts ''
+
+  puts '🎉 All tests completed successfully!'
 end
 
 #------------------------------------------------------------------#

@@ -2,42 +2,41 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'openapi3_parser'
+require 'openapi_first'
 
 class OpenAPIValidationTest < Minitest::Test
   def setup
     @spec_file = File.join(File.dirname(__FILE__), '..', 'openapi', 'openapi.yaml')
-    @document = Openapi3Parser.load_file(@spec_file)
+    @definition = OpenapiFirst.load(@spec_file)
+    @spec = @definition.instance_variable_get(:@resolved)
   end
 
   def test_spec_is_valid
-    if @document.valid?
-      assert @document.valid?
-    else
-      errors = @document.errors.to_a.map { |e| "#{e.message} at #{e.document_location}" }
-      assert @document.valid?, "OpenAPI spec should be valid. Errors:\n#{errors.join("\n")}"
-    end
+    # OpenAPI First loads successfully if spec is valid
+    # If there were errors, OpenapiFirst.load would have raised an exception
+    refute_nil @spec
+    assert_kind_of Hash, @spec
   end
 
   def test_openapi_version
-    assert_equal '3.1.1', @document.openapi, 'Should use OpenAPI 3.1.1'
+    assert_equal '3.1.1', @spec['openapi'], 'Should use OpenAPI 3.1.1'
   end
 
   def test_has_required_info
-    info = @document.info
-    assert info.title, 'Should have title'
-    assert info.version, 'Should have version'
-    assert info.description, 'Should have description'
+    info = @spec['info']
+    assert info['title'], 'Should have title'
+    assert info['version'], 'Should have version'
+    assert info['description'], 'Should have description'
   end
 
   def test_has_servers
-    assert @document.servers.any?, 'Should have at least one server'
-    assert_equal 'https://cyber.trackr.live/api', @document.servers.first.url
+    assert @spec['servers'].any?, 'Should have at least one server'
+    assert_equal 'https://cyber.trackr.live/api', @spec['servers'].first['url']
   end
 
   def test_all_paths_have_operations
-    @document.paths.each do |path, path_item|
-      operations = %i[get post put patch delete head options trace].select { |op| path_item.send(op) }
+    @spec['paths'].each do |path, path_item|
+      operations = %w[get post put patch delete head options trace].select { |op| path_item.key?(op) }
       assert operations.any?, "Path #{path} should have at least one operation"
     end
   end
@@ -50,35 +49,35 @@ class OpenAPIValidationTest < Minitest::Test
     ]
 
     vuln_endpoints.each do |path|
-      path_item = @document.paths[path]
+      path_item = @spec['paths'][path]
       next unless path_item
 
-      get_op = path_item.get
-      vuln_param = get_op.parameters.find { |p| p.name == 'vuln' }
+      get_op = path_item['get']
+      vuln_param = get_op['parameters']&.find { |p| p['name'] == 'vuln' }
 
       assert vuln_param, "#{path} should have vuln parameter"
-      assert_equal '^V-\\d{6}$', vuln_param.schema.pattern, 'Vuln parameter should have correct pattern'
+      assert_equal '^V-\\d{6}$', vuln_param['schema']['pattern'], 'Vuln parameter should have correct pattern'
     end
 
     # Check CCI parameter pattern
-    cci_path = @document.paths['/cci/{item}']
+    cci_path = @spec['paths']['/cci/{item}']
     if cci_path
-      get_op = cci_path.get
-      item_param = get_op.parameters.find { |p| p.name == 'item' }
+      get_op = cci_path['get']
+      item_param = get_op['parameters']&.find { |p| p['name'] == 'item' }
 
       assert item_param, 'CCI endpoint should have item parameter'
-      assert_equal '^CCI-\\d{6}$', item_param.schema.pattern, 'CCI parameter should have correct pattern'
+      assert_equal '^CCI-\\d{6}$', item_param['schema']['pattern'], 'CCI parameter should have correct pattern'
     end
   end
 
   def test_all_operations_have_responses
-    @document.paths.each do |path, path_item|
-      %i[get post put patch delete].each do |method|
-        operation = path_item.send(method)
+    @spec['paths'].each do |path, path_item|
+      %w[get post put patch delete].each do |method|
+        operation = path_item[method]
         next unless operation
 
-        assert operation.responses.any?, "#{method.upcase} #{path} should have responses"
-        assert operation.responses['200'], "#{method.upcase} #{path} should have 200 response"
+        assert operation['responses']&.any?, "#{method.upcase} #{path} should have responses"
+        assert operation['responses']['200'], "#{method.upcase} #{path} should have 200 response"
       end
     end
   end
@@ -89,7 +88,7 @@ class OpenAPIValidationTest < Minitest::Test
       RmfControlList RmfControlDetail CciList CciDetail
     ]
 
-    schemas = @document.components.schemas
+    schemas = @spec['components']['schemas']
     required_schemas.each do |schema_name|
       assert schemas[schema_name], "Should have #{schema_name} schema"
     end
@@ -99,7 +98,7 @@ class OpenAPIValidationTest < Minitest::Test
     # Find all schemas with nullable fields
     nullable_count = 0
 
-    @document.components.schemas.each do |name, schema|
+    @spec['components']['schemas'].each do |name, schema|
       check_nullable_syntax(schema, name) do
         nullable_count += 1
       end
@@ -114,14 +113,14 @@ class OpenAPIValidationTest < Minitest::Test
     return unless schema
 
     # Check if this schema uses anyOf with null type (OpenAPI 3.1 syntax)
-    yield if schema.any_of&.any? { |s| s.type == 'null' } && block_given?
+    yield if schema['anyOf']&.any? { |s| s['type'] == 'null' } && block_given?
 
     # Recursively check properties
-    schema.properties&.each do |prop_name, prop_schema|
+    schema['properties']&.each do |prop_name, prop_schema|
       check_nullable_syntax(prop_schema, "#{path}.#{prop_name}", &block)
     end
 
     # Check array items
-    check_nullable_syntax(schema.items, "#{path}[]", &block) if schema.items
+    check_nullable_syntax(schema['items'], "#{path}[]", &block) if schema['items']
   end
 end

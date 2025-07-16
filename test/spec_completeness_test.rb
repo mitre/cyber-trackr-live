@@ -2,12 +2,13 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'openapi3_parser'
+require 'openapi_first'
 
 class SpecCompletenessTest < Minitest::Test
   def setup
     @spec_file = File.join(File.dirname(__FILE__), '..', 'openapi', 'openapi.yaml')
-    @document = Openapi3Parser.load_file(@spec_file)
+    @definition = OpenapiFirst.load(@spec_file)
+    @spec = @definition.instance_variable_get(:@resolved)
   end
 
   def test_all_required_endpoints_exist
@@ -36,7 +37,7 @@ class SpecCompletenessTest < Minitest::Test
       '/cci/{item}'
     ]
 
-    actual_endpoints = @document.paths.keys
+    actual_endpoints = @spec['paths'].keys
     missing = required_endpoints - actual_endpoints
 
     assert missing.empty?, "Missing required endpoints:\n#{missing.join("\n")}"
@@ -67,44 +68,44 @@ class SpecCompletenessTest < Minitest::Test
       'CciDetail'
     ]
 
-    actual_schemas = @document.components.schemas.keys
+    actual_schemas = @spec['components']['schemas'].keys
     missing = required_schemas - actual_schemas
 
     assert missing.empty?, "Missing required schemas:\n#{missing.join("\n")}"
   end
 
   def test_all_endpoints_have_required_responses
-    @document.paths.each do |path, path_item|
-      %i[get post put patch delete].each do |method|
-        operation = path_item.send(method)
+    @spec['paths'].each do |path, path_item|
+      %w[get post put patch delete].each do |method|
+        operation = path_item[method]
         next unless operation
 
         # All endpoints should have 200 response
-        assert operation.responses['200'],
+        assert operation['responses']['200'],
                "#{method.upcase} #{path} missing 200 response"
 
         # All endpoints should have response content
-        response_200 = operation.responses['200']
-        assert response_200.content,
+        response_200 = operation['responses']['200']
+        assert response_200['content'],
                "#{method.upcase} #{path} 200 response missing content"
 
         # All responses should have JSON content
-        assert response_200.content['application/json'],
+        assert response_200['content']['application/json'],
                "#{method.upcase} #{path} 200 response missing application/json content"
       end
     end
   end
 
   def test_all_tags_are_used
-    defined_tags = @document.tags.map(&:name)
+    defined_tags = @spec['tags'].map { |tag| tag['name'] }
     used_tags = []
 
-    @document.paths.each do |path, path_item|
-      %i[get post put patch delete].each do |method|
-        operation = path_item.send(method)
+    @spec['paths'].each do |_path, path_item|
+      %w[get post put patch delete].each do |method|
+        operation = path_item[method]
         next unless operation
 
-        used_tags.concat(operation.tags.to_a) if operation.tags
+        used_tags.concat(operation['tags']) if operation['tags']
       end
     end
 
@@ -123,40 +124,40 @@ class SpecCompletenessTest < Minitest::Test
       'release' => '^\\d+(\\.\\d+)?$'
     }
 
-    @document.paths.each do |path, path_item|
-      %i[get post put patch delete].each do |method|
-        operation = path_item.send(method)
+    @spec['paths'].each do |path, path_item|
+      %w[get post put patch delete].each do |method|
+        operation = path_item[method]
         next unless operation
 
-        operation.parameters.each do |param|
-          expected_pattern = param_patterns[param.name]
+        operation['parameters']&.each do |param|
+          expected_pattern = param_patterns[param['name']]
           next unless expected_pattern
 
-          actual_pattern = param.schema.pattern
+          actual_pattern = param['schema']['pattern']
           assert_equal expected_pattern, actual_pattern,
-                       "Parameter '#{param.name}' in #{method.upcase} #{path} has inconsistent pattern"
+                       "Parameter '#{param['name']}' in #{method.upcase} #{path} has inconsistent pattern"
         end
       end
     end
   end
 
   def test_spec_metadata_is_complete
-    info = @document.info
+    info = @spec['info']
 
-    assert info.title, 'Missing info.title'
-    assert info.description, 'Missing info.description'
-    assert info.version, 'Missing info.version'
-    assert info.contact, 'Missing info.contact'
-    assert info.contact.name, 'Missing info.contact.name'
-    assert info.contact.url, 'Missing info.contact.url'
-    assert info.license, 'Missing info.license'
-    assert info.license.name, 'Missing info.license.name'
-    assert info.license.url, 'Missing info.license.url'
+    assert info['title'], 'Missing info.title'
+    assert info['description'], 'Missing info.description'
+    assert info['version'], 'Missing info.version'
+    assert info['contact'], 'Missing info.contact'
+    assert info['contact']['name'], 'Missing info.contact.name'
+    assert info['contact']['url'], 'Missing info.contact.url'
+    assert info['license'], 'Missing info.license'
+    assert info['license']['name'], 'Missing info.license.name'
+    assert info['license']['url'], 'Missing info.license.url'
   end
 
   def test_example_values_are_realistic
     # Check that examples make sense for their context
-    @document.components.schemas.each do |name, schema|
+    @spec['components']['schemas'].each do |name, schema|
       check_examples(schema, name)
     end
   end
@@ -166,29 +167,29 @@ class SpecCompletenessTest < Minitest::Test
   def check_examples(schema, path)
     return unless schema
 
-    if schema.example
-      case schema.type
+    if schema['example']
+      case schema['type']
       when 'string'
-        if schema.pattern
+        if schema['pattern']
           begin
-            regex = Regexp.new(schema.pattern)
-            assert schema.example.match?(regex),
-                   "Example '#{schema.example}' at #{path} doesn't match pattern #{schema.pattern}"
+            regex = Regexp.new(schema['pattern'])
+            assert schema['example'].match?(regex),
+                   "Example '#{schema['example']}' at #{path} doesn't match pattern #{schema['pattern']}"
           rescue RegexpError
             # Skip invalid regex patterns
           end
         end
       when 'array'
-        assert schema.example.is_a?(Array),
+        assert schema['example'].is_a?(Array),
                "Example at #{path} should be an array"
       end
     end
 
     # Recurse
-    schema.properties&.each do |name, prop|
+    schema['properties']&.each do |name, prop|
       check_examples(prop, "#{path}.#{name}")
     end
 
-    check_examples(schema.items, "#{path}[]") if schema.items
+    check_examples(schema['items'], "#{path}[]") if schema['items']
   end
 end

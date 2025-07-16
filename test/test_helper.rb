@@ -4,8 +4,10 @@
 $LOAD_PATH.unshift(File.expand_path('../lib', __dir__))
 
 require 'minitest/autorun'
-require 'webmock/minitest'
 require 'json'
+
+# WebMock is loaded only by tests that need it (cyber_trackr_helper_test.rb)
+# Live integration tests should NOT load WebMock to allow real HTTP requests
 
 # Test helper for Cyber Trackr API tests
 module TestHelper

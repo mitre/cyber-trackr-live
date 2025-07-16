@@ -87,7 +87,7 @@ class LiveIntegrationTest < Minitest::Test
     rescue JSON::ParserError => e
       # Known issue: API returns invalid JSON with control characters
       skip "Skipping due to API JSON parsing issue: #{e.message[0..100]}..."
-    rescue => e
+    rescue StandardError => e
       # Log other errors but don't fail the test suite
       puts "⚠️  Warning: Live API test failed with: #{e.class}: #{e.message}"
       skip "Live API test failed: #{e.message}"

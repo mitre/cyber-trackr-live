@@ -102,7 +102,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
       'site/'
     ]
     system("git add #{files_to_add.join(' ')}")
-    system("git commit -m 'Bump version to #{new_version}\n\n🤖 Generated with Claude Code\n\nCo-Authored-By: Claude <noreply@anthropic.com>'") or abort('Failed to commit changes')
+    system("git commit -m 'Bump version to #{new_version}'") or abort('Failed to commit changes')
 
     puts "\n🎉 Release #{new_version} prepared!"
     puts "\nNext steps:"
@@ -119,13 +119,13 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     package_file = 'package.json'
     package_content = JSON.parse(File.read(package_file))
     package_content['version'] = version
-    File.write(package_file, JSON.pretty_generate(package_content) + "\n")
+    File.write(package_file, "#{JSON.pretty_generate(package_content)}\n")
     puts "✓ Synced package.json version to #{version}"
   end
 
   def validate_version_consistency(expected_version)
     puts 'Validating version consistency...'
-    
+
     # Check OpenAPI spec
     openapi_version = YAML.load_file('openapi/openapi.yaml')['info']['version']
     abort "❌ OpenAPI version mismatch: expected #{expected_version}, got #{openapi_version}" unless openapi_version == expected_version
@@ -147,14 +147,14 @@ namespace :release do # rubocop:disable Metrics/BlockLength
   def update_changelog(version)
     # Update OpenAPI changelog
     update_openapi_changelog(version)
-    
+
     # Update gem changelog
     update_gem_changelog(version)
   end
 
   def update_openapi_changelog(version)
     changelog_file = 'CHANGELOG-OPENAPI.md'
-    
+
     # Get OpenAPI-related changes since last tag
     last_tag = `git describe --tags --abbrev=0 2>/dev/null`.strip
     changes = if last_tag.empty?
@@ -166,7 +166,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     # Create entry
     date = Time.now.strftime('%Y-%m-%d')
     new_section = "\n## [#{version}] - #{date}\n\n"
-    
+
     if changes.any?
       new_section += "### OpenAPI Specification Changes\n\n"
       new_section += changes.map { |c| "- #{c.strip.sub(/^[a-f0-9]+ /, '')}" }.join("\n")
@@ -181,7 +181,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
 
   def update_gem_changelog(version)
     changelog_file = 'CHANGELOG-GEM.md'
-    
+
     # Get gem/client-related changes since last tag
     last_tag = `git describe --tags --abbrev=0 2>/dev/null`.strip
     changes = if last_tag.empty?
@@ -193,7 +193,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     # Create entry
     date = Time.now.strftime('%Y-%m-%d')
     new_section = "\n## [#{version}] - #{date}\n\n"
-    
+
     if changes.any?
       new_section += "### Ruby Gem Changes\n\n"
       new_section += changes.map { |c| "- #{c.strip.sub(/^[a-f0-9]+ /, '')}" }.join("\n")
@@ -210,7 +210,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
   def prepend_to_changelog(file, content)
     if File.exist?(file)
       existing = File.read(file)
-      File.write(file, existing.sub(/(\n## )/, content + '\1'))
+      File.write(file, existing.sub(/(\n## )/, "#{content}\\1"))
     else
       header = "# Changelog\n\nAll notable changes to this project will be documented in this file.\n"
       File.write(file, header + content)
@@ -304,9 +304,9 @@ end
 desc 'Validate version consistency across all files'
 task :version_check do
   openapi_version = YAML.load_file('openapi/openapi.yaml')['info']['version']
-  
+
   puts "OpenAPI version: #{openapi_version}"
-  
+
   # Check client version if generated
   client_version_file = 'lib/cyber_trackr_client/version.rb'
   if File.exist?(client_version_file)
@@ -316,7 +316,7 @@ task :version_check do
   else
     puts '⚠️  Client not generated yet'
   end
-  
+
   # Check package.json
   package_version = JSON.parse(File.read('package.json'))['version']
   puts "Package.json version: #{package_version}"

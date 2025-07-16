@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'test_helper'
+require 'webmock/minitest' # WebMock for mocking HTTP requests in helper tests
 require 'cyber_trackr_helper'
 
 class HelperTest < Minitest::Test
