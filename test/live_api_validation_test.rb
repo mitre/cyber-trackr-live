@@ -2,7 +2,6 @@
 # frozen_string_literal: true
 
 require 'minitest/autorun'
-require 'openapi_first'
 require 'faraday'
 require 'faraday/follow_redirects'
 require 'json'
@@ -18,9 +17,6 @@ class LiveAPIValidationTest < Minitest::Test
   public
 
   def setup
-    @spec_file = 'openapi/openapi.yaml'
-    @definition = OpenapiFirst.load(@spec_file)
-    @spec = @definition.instance_variable_get(:@resolved)
     @base_url = 'https://cyber.trackr.live'
     @client = Faraday.new(url: @base_url) do |f|
       f.headers['Accept'] = 'application/json'

@@ -3,7 +3,6 @@
 source 'https://rubygems.org'
 
 # OpenAPI validation with full 3.1 support
-gem 'openapi_first', '~> 2.2'
 
 # HTTP client for API testing
 gem 'faraday', '~> 2.0'

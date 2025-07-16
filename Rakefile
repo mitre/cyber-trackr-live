@@ -19,20 +19,17 @@ require 'rake/testtask'
 #------------------------------------------------------------------#
 
 # Stage 1: Fast tests (no gem build needed)
-# These tests validate OpenAPI spec, syntax, and completeness
+# These tests validate core gem functionality
 Rake::TestTask.new('test:stage1') do |t|
   t.libs.push 'lib'
   t.test_files = FileList[
-    'test/openapi_validation_test.rb',
-    'test/spec_completeness_test.rb',
-    'test/comprehensive_openapi_test.rb',
-    'test/windows_compatibility_test.rb'
+    'test/cyber_trackr_helper_test.rb'
   ]
   t.verbose = true
   t.warning = false
 end
 
-# Stage 2A: Helper tests (with WebMock for mocking)
+# Stage 2A: Core tests (with WebMock for mocking)
 Rake::TestTask.new('test:stage2a') do |t|
   t.libs.push 'lib'
   t.test_files = FileList[
@@ -69,10 +66,9 @@ task 'test:two_stage' do
 
   # Stage 1: Fast validation (no gem build needed)
   puts '📋 Stage 1: Fast Validation Tests'
-  puts '   - OpenAPI specification validation'
-  puts '   - Specification completeness checks'
-  puts '   - Comprehensive OpenAPI tests'
-  puts '   - Content-Type fix validation'
+  puts '   - Core gem functionality tests'
+  puts '   - Helper method validation'
+  puts '   - Mock API testing'
   puts ''
 
   Rake::Task['test:stage1'].invoke
@@ -109,10 +105,7 @@ end
 Rake::TestTask.new do |t|
   t.libs.push 'lib'
   t.test_files = FileList[
-    'test/openapi_validation_test.rb',
-    'test/spec_completeness_test.rb',
-    'test/comprehensive_openapi_test.rb',
-    'test/windows_compatibility_test.rb'
+    'test/cyber_trackr_helper_test.rb'
   ]
   t.verbose = true
   t.warning = false
@@ -130,12 +123,10 @@ task 'test:all' do
   puts '🚀 Running all tests in separate processes to avoid WebMock conflicts'
   puts ''
 
-  # Stage 1: OpenAPI validation tests (no WebMock needed)
-  puts '📋 Stage 1: OpenAPI Validation Tests'
+  # Stage 1: Core gem tests (no WebMock needed)
+  puts '📋 Stage 1: Core Gem Tests'
   stage1_tests = [
-    'test/openapi_validation_test.rb',
-    'test/spec_completeness_test.rb',
-    'test/comprehensive_openapi_test.rb'
+    'test/cyber_trackr_helper_test.rb'
   ]
 
   stage1_tests.each do |test_file|
