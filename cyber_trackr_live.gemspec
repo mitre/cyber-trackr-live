@@ -38,7 +38,10 @@ Gem::Specification.new do |spec|
   spec.rdoc_options = ['--main', 'README-GEM.md']
 
   # Runtime dependencies
-  spec.add_dependency 'typhoeus', '~> 1.4'
+  spec.add_dependency 'faraday', '~> 2.0'
+  spec.add_dependency 'faraday-follow_redirects', '~> 0.3'
+  spec.add_dependency 'faraday-multipart', '~> 1.0'
+  spec.add_dependency 'marcel', '~> 1.0'
   spec.add_dependency 'yard', '~> 0.9'
 
   # Development dependencies
@@ -46,7 +49,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'bundler-audit', '~> 0.9'
   spec.add_development_dependency 'minitest', '~> 5.0'
   spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rubocop', '~> 1.0'
+  spec.add_development_dependency 'rubocop', '~> 1.50'
+  spec.add_development_dependency 'rubocop-ast', '~> 1.28'
   spec.add_development_dependency 'simplecov', '~> 0.22'
   spec.add_development_dependency 'webmock', '~> 3.0'
 end

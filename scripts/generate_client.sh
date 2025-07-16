@@ -29,6 +29,7 @@ docker run --rm \
     -i /local/openapi/openapi.yaml \
     -g ruby \
     -o /local/$TEMP_DIR \
+    --library=faraday \
     --additional-properties=gemName=cyber_trackr_client,moduleName=CyberTrackrClient
 
 echo "✅ Client generation complete"

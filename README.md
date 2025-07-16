@@ -107,8 +107,8 @@ npm install
 #### Working on the OpenAPI Specification
 
 ```bash
-# Validate the OpenAPI spec
-bundle exec rake test:openapi
+# Validate the OpenAPI spec (using Spectral)
+npm run docs:validate
 
 # Preview API docs locally
 npm run docs:dev
@@ -165,27 +165,51 @@ cyber-trackr-live/
 
 ## 🧪 Testing
 
-The project includes comprehensive test coverage:
+The project uses a two-tier testing approach with clear separation of concerns:
 
+### OpenAPI Validation (Node.js/Spectral)
 ```bash
-# Run unit tests (default)
+# Validate OpenAPI spec - professional-grade validation
+npm run docs:validate
+```
+
+### Ruby Testing (Core Functionality)
+```bash
+# Run core gem tests (fast - default)
 bundle exec rake test
 
-# Run all tests including integration
+# Run all tests including live API integration
 bundle exec rake test:all
 
-# Run OpenAPI validation tests
-bundle exec rake test:openapi
+# Run live API integration tests only
+bundle exec rake test:stage2b
+```
 
-# Run integration tests (requires API access)
-bundle exec rake test:integration
+### Test Architecture
+
+```
+┌─────────────────┐    ┌─────────────────┐
+│   Spectral      │    │ Ruby Testing    │
+│   (Node.js)     │    │                 │
+│                 │    │                 │
+│ • OpenAPI 3.1   │    │ • Core gem      │
+│ • Syntax valid  │    │ • Helper methods│
+│ • Best practice │    │ • Live API      │
+│ • Custom rules  │    │ • Integration   │
+│ • DISA patterns │    │ • Business logic│
+└─────────────────┘    └─────────────────┘
+        │                       │
+        ▼                       ▼
+   Static Analysis        Dynamic Testing
+   (Spec Quality)         (Live API)
 ```
 
 ### Test Suite Details
 
-1. **OpenAPI Validation** - Validates OpenAPI 3.1.1 syntax and completeness
-2. **Unit Tests** - Tests helper methods and custom functionality
-3. **Integration Tests** - Tests against live cyber.trackr.live API
+1. **Spectral Validation** - Professional OpenAPI 3.1 validation with custom DISA rules
+2. **Core Gem Tests** - Tests helper methods and gem functionality  
+3. **Live API Tests** - Tests against live cyber.trackr.live API responses
+4. **Integration Tests** - End-to-end workflow testing
 
 ## ⚠️ Important API Notes
 
