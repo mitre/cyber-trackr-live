@@ -13,6 +13,7 @@ debug_*.rb
 SESSION*.md
 RECOVERY*.md
 NEXT_SESSION*.md
+CLAUDE.md
 
 # Generated client (if we decide to exclude it)
 # generated-client/
