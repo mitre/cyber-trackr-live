@@ -3,10 +3,11 @@
 
 require 'minitest/autorun'
 require 'openapi_first'
+require 'pathname'
 
 class OpenAPIValidationTest < Minitest::Test
   def setup
-    @spec_file = File.expand_path('../openapi/openapi.yaml', __dir__)
+    @spec_file = Pathname(__dir__).parent.join('openapi', 'openapi.yaml').to_s
     @definition = OpenapiFirst.load(@spec_file)
     @spec = @definition.instance_variable_get(:@resolved)
   end
