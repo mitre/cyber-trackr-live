@@ -36,8 +36,10 @@ jobs:
       run: |
         # Install libcurl via msys2 (already available in Windows runners)
         C:/msys64/usr/bin/pacman -S --noconfirm mingw-w64-ucrt-x86_64-curl
-        # Add msys2 bin to PATH for this step
-        echo "C:/msys64/ucrt64/bin" >> $GITHUB_PATH
+        # Copy libcurl.dll to system32 where Ruby FFI can find it
+        cp C:/msys64/ucrt64/bin/libcurl-4.dll C:/Windows/System32/libcurl.dll
+        # Also copy to current directory as fallback
+        cp C:/msys64/ucrt64/bin/libcurl-4.dll ./libcurl.dll
         
     - name: Run tests
       run: |
