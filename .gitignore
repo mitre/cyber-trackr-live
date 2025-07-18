@@ -52,3 +52,4 @@ yarn-error.log*
 *.swo
 *~
 .DS_Store
+docs/.vitepress/cache/
