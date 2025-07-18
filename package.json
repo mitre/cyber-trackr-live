@@ -4,13 +4,23 @@
   "private": true,
   "description": "Documentation for cyber-trackr-live API",
   "scripts": {
-    "docs:dev": "scalar serve openapi/openapi.yaml --port 4000",
-    "docs:build": "node scripts/generate-html.js",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
     "docs:build-rapidoc": "node scripts/generate-rapidoc.js",
-    "docs:validate": "spectral lint openapi/openapi.yaml"
+    "docs:validate": "spectral lint openapi/openapi.yaml",
+    "docs:validate-mermaid": "node scripts/validate-mermaid.js",
+    "docs:validate-all": "npm run docs:validate && npm run docs:validate-mermaid",
+    "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
+    "@mermaid-js/mermaid-cli": "^11.6.0",
     "@scalar/cli": "^0.2.0",
-    "@stoplight/spectral-cli": "^6.11.0"
-  }
+    "@stoplight/spectral-cli": "^6.11.0",
+    "js-yaml": "^4.1.0",
+    "mermaid": "^11.9.0",
+    "vitepress": "^1.6.3",
+    "vitepress-openapi": "^0.1.2",
+    "vitepress-plugin-mermaid": "^2.0.17"
+  },
+  "type": "module"
 }
