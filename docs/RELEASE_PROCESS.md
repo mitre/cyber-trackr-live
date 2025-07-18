@@ -322,5 +322,5 @@ The release process ensures reliability for downstream consumers.
 ## Version History
 
 See the changelogs for complete version history:
-- [OpenAPI Changes](../CHANGELOG-OPENAPI.md)
-- [Ruby Gem Changes](../CHANGELOG-GEM.md)
+- [OpenAPI Changes](/reference/changelog-openapi)
+- [Ruby Gem Changes](/reference/changelog-ruby)

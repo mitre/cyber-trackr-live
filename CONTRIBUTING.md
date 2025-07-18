@@ -1,3 +1,10 @@
+---
+title: Contributing
+description: How to contribute to the cyber-trackr-live project
+layout: doc
+sidebar: true
+---
+
 # Contributing to cyber-trackr-live
 
 Thank you for your interest in contributing to cyber-trackr-live! This project provides an OpenAPI specification and Ruby client for the cyber.trackr.live API.
@@ -148,20 +155,44 @@ vi lib/cyber_trackr_helper.rb  # Add YARD comments
 
 We use a **two-tier testing approach** with clear separation of concerns:
 
-```
-┌─────────────────┐    ┌─────────────────┐
-│   Spectral      │    │ Ruby Testing    │
-│   (Node.js)     │    │                 │
-│ • OpenAPI 3.1   │    │ • Core gem      │
-│ • Syntax valid  │    │ • Helper methods│
-│ • Best practice │    │ • Live API      │
-│ • Custom rules  │    │ • Integration   │
-│ • DISA patterns │    │ • Business logic│
-└─────────────────┘    └─────────────────┘
-        │                       │
-        ▼                       ▼
-   Static Analysis        Dynamic Testing
-   (Spec Quality)         (Live API)
+```mermaid
+graph TD
+    subgraph tier1 ["🔧 Tier 1: Static Validation (Spectral)"]
+        A["📋 OpenAPI Specification"]
+        A --> A1["✅ OpenAPI 3.1.1 compliance"]
+        A --> A2["✅ Syntax validation"]
+        A --> A3["✅ Best practices"]
+        A --> A4["✅ Custom DISA rules"]
+        A --> A5["✅ Professional patterns"]
+        A1 --> B["📊 Static Analysis Results"]
+        A2 --> B
+        A3 --> B
+        A4 --> B
+        A5 --> B
+    end
+    
+    subgraph tier2 ["💎 Tier 2: Dynamic Testing (Ruby)"]
+        C["🌐 Live API Testing"]
+        C --> C1["📦 Core gem functionality"]
+        C --> C2["🛠️ Helper methods"]
+        C --> C3["🔗 Integration tests"]
+        C --> C4["📋 Business logic"]
+        C --> C5["🧪 Cross-platform"]
+        C1 --> D["🧪 Dynamic Test Results"]
+        C2 --> D
+        C3 --> D
+        C4 --> D
+        C5 --> D
+    end
+    
+    B --> E["✅ Complete Validation"]
+    D --> E
+    
+    style tier1 fill:#fff5e6,stroke:#fd7e14,stroke-width:2px
+    style tier2 fill:#e8f5e8,stroke:#28a745,stroke-width:2px
+    style A fill:#fd7e14,stroke:#e55100,stroke-width:2px,color:#000000
+    style C fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
+    style E fill:#007bff,stroke:#0056b3,stroke-width:2px,color:#ffffff
 ```
 
 ### Test Structure
@@ -384,7 +415,7 @@ Never manually edit `lib/cyber_trackr_client/version.rb` - it's generated!
 
 ## 🤝 Code of Conduct
 
-Please follow our [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions.
+Please follow our [Code of Conduct](/project/code-of-conduct) in all interactions.
 
 ## 📄 License
 
