@@ -1,3 +1,10 @@
+---
+title: cyber-trackr-live
+description: OpenAPI specification and Ruby client for the cyber.trackr.live API
+layout: doc
+sidebar: true
+---
+
 # cyber-trackr-live
 
 OpenAPI specification and Ruby client for the [cyber.trackr.live](https://cyber.trackr.live) API - providing programmatic access to DISA STIGs, SRGs, RMF controls, CCIs, and SCAP data.
@@ -15,8 +22,8 @@ This repository contains:
 - [API Documentation](https://mitre.github.io/cyber-trackr-live/) - Interactive Scalar docs
 - [Ruby Gem](https://rubygems.org/gems/cyber_trackr_live) - Install with `gem install cyber_trackr_live`
 - [OpenAPI Spec](openapi/openapi.yaml) - OpenAPI 3.1.1 specification
-- [API Changelog](CHANGELOG-OPENAPI.md) - API specification changes
-- [Gem Changelog](CHANGELOG-GEM.md) - Ruby client changes
+- [API Changelog](/reference/changelog-openapi) - API specification changes
+- [Gem Changelog](/reference/changelog-ruby) - Ruby client changes
 
 ## 💎 Installation
 
@@ -32,7 +39,7 @@ Or add to your Gemfile:
 gem 'cyber_trackr_live'
 ```
 
-See [README-GEM.md](README-GEM.md) for detailed Ruby usage instructions.
+See [README-GEM.md](/clients/ruby/) for detailed Ruby usage instructions.
 
 ### Using the OpenAPI Spec
 
@@ -232,11 +239,11 @@ The API appears to accept reasonable request rates, but be respectful:
 
 ## 🤝 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup and contribution guidelines.
+See [Contributing Guide](contributing) for development setup and contribution guidelines.
 
 ## 📄 License
 
-This project is licensed under the Apache License 2.0 - see [LICENSE.md](LICENSE.md) for details.
+This project is licensed under the Apache License 2.0 - see [License](license) for details.
 
 ## 🏢 Acknowledgments
 

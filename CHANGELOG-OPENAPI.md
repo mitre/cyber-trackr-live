@@ -1,3 +1,8 @@
+---
+title: OpenAPI Specification Changelog
+description: Version history and changes for the cyber.trackr.live OpenAPI specification
+---
+
 # OpenAPI Specification Changelog
 
 All notable changes to the cyber.trackr.live OpenAPI specification will be documented in this file.

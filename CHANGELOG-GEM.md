@@ -1,3 +1,8 @@
+---
+title: Ruby Gem Changelog
+description: Version history and changes for the cyber_trackr_live Ruby gem
+---
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

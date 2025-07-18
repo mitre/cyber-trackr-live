@@ -1,3 +1,10 @@
+---
+title: Notice
+description: Legal notices and government contract information for cyber-trackr-live
+layout: doc
+sidebar: true
+---
+
 MITRE hereby grants express written permission to use, reproduce, distribute, modify, and otherwise leverage this software to the extent permitted by the licensed terms provided in the LICENSE.md file included with this project.
 
 This software was produced for the U. S. Government under Contract Number HHSM-500-2012-00008I, and is subject to Federal Acquisition Regulation Clause 52.227-14, Rights in Data-General.  

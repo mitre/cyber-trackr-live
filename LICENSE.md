@@ -1,3 +1,10 @@
+---
+title: License
+description: Apache 2.0 license for the cyber-trackr-live project
+layout: doc
+sidebar: true
+---
+
 Licensed under the apache-2.0 license, except as noted below.  
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:  

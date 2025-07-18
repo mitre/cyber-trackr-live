@@ -1,13 +1,20 @@
+---
+title: Security Policy
+description: Security vulnerability reporting and policies for cyber-trackr-live
+layout: doc
+sidebar: true
+---
+
 # Security Policy
 
 ## Reporting Security Issues
 
-The MITRE SAF team takes security seriously. If you discover a security vulnerability in the Train-Juniper plugin, please report it responsibly.
+The MITRE SAF team takes security seriously. If you discover a security vulnerability in the cyber-trackr-live project, please report it responsibly.
 
 ### Contact Information
 
 - **Email**: [saf-security@mitre.org](mailto:saf-security@mitre.org)
-- **GitHub**: Use the [Security tab](https://github.com/mitre/train-juniper/security) to report vulnerabilities privately
+- **GitHub**: Use the [Security tab](https://github.com/mitre/cyber-trackr-live/security) to report vulnerabilities privately
 
 ### What to Include
 
