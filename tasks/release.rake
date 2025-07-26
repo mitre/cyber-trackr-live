@@ -79,11 +79,11 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     system('bundle exec rubocop') or abort('Lint checks failed - cannot release')
     puts '✓ Lint checks passed'
 
-    # Update CHANGELOG.md
-    update_changelog(new_version)
+    # Generate changelog with git-cliff
+    generate_changelog_with_git_cliff(new_version)
 
-    # Create release notes
-    create_release_notes(new_version)
+    # Create release notes with git-cliff
+    create_release_notes_with_git_cliff(new_version)
 
     # Regenerate documentation
     puts 'Regenerating documentation...'
@@ -99,7 +99,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
       'CHANGELOG-OPENAPI.md',
       'CHANGELOG-GEM.md',
       "docs/release-notes/v#{new_version}.md",
-      'site/'
+      'docs/.vitepress/dist/'
     ]
     system("git add #{files_to_add.join(' ')}")
     system("git commit -m 'Bump version to #{new_version}'") or abort('Failed to commit changes')
@@ -288,6 +288,81 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     NOTES
 
     File.write(notes_file, content)
+    puts "✓ Created release notes at #{notes_file}"
+  end
+
+  # New git-cliff based changelog generation
+  def generate_changelog_with_git_cliff(version)
+    puts 'Generating changelogs with git-cliff...'
+    
+    # Generate OpenAPI changelog (docs, api, spec related changes)
+    system('git-cliff --include-path "openapi/**" --include-path "docs/**" --include-path "package.json" --include-path "*.md" --output CHANGELOG-OPENAPI.md') or abort('Failed to generate OpenAPI changelog')
+    puts '✓ Updated CHANGELOG-OPENAPI.md'
+    
+    # Generate Ruby gem changelog (lib, test, gem related changes)
+    system('git-cliff --include-path "lib/**" --include-path "test/**" --include-path "*.gemspec" --include-path "Gemfile*" --include-path "Rakefile" --include-path "tasks/**" --output CHANGELOG-GEM.md') or abort('Failed to generate gem changelog')
+    puts '✓ Updated CHANGELOG-GEM.md'
+  end
+
+  def create_release_notes_with_git_cliff(version)
+    notes_dir = 'docs/release-notes'
+    FileUtils.mkdir_p(notes_dir)
+    notes_file = "#{notes_dir}/v#{version}.md"
+    
+    # Generate release notes for this version using git-cliff
+    system("git-cliff --tag v#{version} --unreleased > #{notes_file}") or abort('Failed to generate release notes')
+    
+    # Add installation and usage sections to the generated notes
+    additional_content = <<~NOTES
+
+## Installation
+
+### Ruby Gem
+
+```bash
+gem install cyber_trackr_live -v #{version}
+```
+
+Or add to your Gemfile:
+
+```ruby
+gem 'cyber_trackr_live', '~> #{version}'
+```
+
+### OpenAPI Documentation
+
+The interactive API documentation is available at:
+- [GitHub Pages](https://mitre.github.io/cyber-trackr-live/)
+- [Raw OpenAPI Spec](https://raw.githubusercontent.com/mitre/cyber-trackr-live/v#{version}/openapi/openapi.yaml)
+
+## Usage Example
+
+```ruby
+require 'cyber_trackr_live'
+
+# Initialize the client
+client = CyberTrackrClient::ApiClient.new
+
+# Use the helper for convenience
+helper = CyberTrackrHelper.new
+
+# List all STIGs
+stigs = helper.list_stigs
+puts "Found \#{stigs.size} STIGs"
+
+# Get a complete STIG with all requirements
+complete_stig = helper.fetch_complete_stig('Juniper_SRX_Services_Gateway_ALG', '3', '3')
+puts "STIG has \#{complete_stig[:requirements].size} requirements"
+```
+
+## Full Changelog
+
+- [OpenAPI Changes](../../CHANGELOG-OPENAPI.md)
+- [Ruby Gem Changes](../../CHANGELOG-GEM.md)
+    NOTES
+    
+    # Append additional content
+    File.write(notes_file, File.read(notes_file) + additional_content)
     puts "✓ Created release notes at #{notes_file}"
   end
 

@@ -53,19 +53,13 @@ jobs:
         id: pages
         uses: actions/configure-pages@v4
 
-      - name: Build OpenAPI documentation
-        run: |
-          mkdir -p site
-          npm run docs:build -- --output site/index.html
-          
-      - name: Build and integrate YARD API documentation
-        run: |
-          bundle exec yard doc --output-dir site/api --no-private
+      - name: Build VitePress documentation
+        run: npm run docs:build
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: docs/.vitepress/dist
 
   deploy:
     environment:

@@ -20,7 +20,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Need full history to checkout branch
+          fetch-depth: 0  # Need full history for git-cliff
+          token: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Configure git and checkout main
         run: |
@@ -33,6 +34,11 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
+          
+      - name: Install git-cliff
+        uses: taiki-e/install-action@v2
+        with:
+          tool: git-cliff
           
       - name: Run tests
         run: bundle exec rake test
@@ -59,7 +65,7 @@ jobs:
           else
             echo "NOTES=No release notes found for v${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT
           fi
-        
+          
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
