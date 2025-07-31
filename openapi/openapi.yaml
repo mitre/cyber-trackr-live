@@ -1,32 +1,22 @@
+---
 openapi: 3.1.1
 info:
   title: Cyber Trackr API
-  description: |
-    Complete OpenAPI 3.1.1 specification for cyber.trackr.live API.
-    This API provides access to DISA STIGs, SRGs, RMF controls, CCIs, and SCAP data.
-    
-    ## DISA Cybersecurity Ecosystem Hierarchy
-    
-    ```
-    NIST RMF Controls (high-level policy framework)
-        ↓ (decomposed into atomic, testable statements)
-    CCIs (Control Correlation Identifiers - bridge policy to implementation)
-        ↓ (grouped by technology class into generic requirements)  
-    SRGs (Security Requirements Guides - technology class "what" to do)
-        ↓ (implemented as vendor-specific "how" to do it)
-    STIGs (Security Technical Implementation Guides - vendor/product specific)
-        ↓ (automated versions for scanning tools)
-    SCAP (Security Content Automation Protocol documents)
-    ```
-    
-    ## Critical Relationships
-    
-    - **RMF Controls** contain assessment procedures that reference **CCIs**
-    - **CCIs** map back to **RMF Controls** and forward to **STIG/SRG requirements**
-    - **SRGs** define generic technology requirements that **STIGs** implement specifically
-    - **V-IDs** can appear in both SRG and corresponding STIG (same requirement, different specificity)
-    - **SV-IDs** are XCCDF rule identifiers with revision tracking across document releases
-    
+  description: "Complete OpenAPI 3.1.1 specification for cyber.trackr.live API.\nThis
+    API provides access to DISA STIGs, SRGs, RMF controls, CCIs, and SCAP data.\n\n##
+    DISA Cybersecurity Ecosystem Hierarchy\n\n```\nNIST RMF Controls (high-level policy
+    framework)\n    ↓ (decomposed into atomic, testable statements)\nCCIs (Control
+    Correlation Identifiers - bridge policy to implementation)\n    ↓ (grouped by
+    technology class into generic requirements)  \nSRGs (Security Requirements Guides
+    - technology class \"what\" to do)\n    ↓ (implemented as vendor-specific \"how\"
+    to do it)\nSTIGs (Security Technical Implementation Guides - vendor/product specific)\n
+    \   ↓ (automated versions for scanning tools)\nSCAP (Security Content Automation
+    Protocol documents)\n```\n\n## Critical Relationships\n\n- **RMF Controls** contain
+    assessment procedures that reference **CCIs**\n- **CCIs** map back to **RMF Controls**
+    and forward to **STIG/SRG requirements**\n- **SRGs** define generic technology
+    requirements that **STIGs** implement specifically\n- **V-IDs** can appear in
+    both SRG and corresponding STIG (same requirement, different specificity)\n- **SV-IDs**
+    are XCCDF rule identifiers with revision tracking across document releases\n"
   version: 1.0.0
   contact:
     name: Community OpenAPI Documentation
@@ -34,298 +24,283 @@ info:
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0
-
 servers:
-  - url: https://cyber.trackr.live/api
-    description: Production server (default)
-  - url: https://{subdomain}.trackr.live/api
-    description: Configurable server endpoint
-    variables:
-      subdomain:
-        default: cyber
-        description: The subdomain for the trackr.live API
-        enum:
-          - cyber
-          - test
-          - staging
-
+- url: https://cyber.trackr.live/api
+  description: Production server (default)
+- url: https://{subdomain}.trackr.live/api
+  description: Configurable server endpoint
+  variables:
+    subdomain:
+      default: cyber
+      description: The subdomain for the trackr.live API
+      enum:
+      - cyber
+      - test
+      - staging
 x-code-samples:
-  - lang: Ruby
-    label: "Fetch complete STIG with all controls"
-    source: |
-      # First get the document summary
-      doc = client.get_document('Juniper_SRX_Services_Gateway_ALG', '3', '3')
-      
-      # Then fetch detailed data for each requirement
-      complete_requirements = []
-      doc.requirements.each do |req|
-        detailed = client.get_requirement('Juniper_SRX_Services_Gateway_ALG', '3', '3', req.id)
-        complete_requirements << detailed
-        sleep 0.1 # Be respectful to the API
-      end
-  
-  - lang: Ruby
-    label: "Filter STIGs from mixed list"
-    source: |
-      # The listAllDocuments endpoint returns both STIGs and SRGs
-      all_docs = client.list_all_documents
-      
-      # Filter to get only STIGs
-      stigs = all_docs.reject { |name, versions| 
-        name.include?('Security_Requirements_Guide') || name.include?('(SRG)')
-      }
-      
-      # Filter to get only SRGs
-      srgs = all_docs.select { |name, versions|
-        name.include?('Security_Requirements_Guide') || name.include?('(SRG)')
-      }
+- lang: Ruby
+  label: Fetch complete STIG with all controls
+  source: |
+    # First get the document summary
+    doc = client.get_document('Juniper_SRX_Services_Gateway_ALG', '3', '3')
 
+    # Then fetch detailed data for each requirement
+    complete_requirements = []
+    doc.requirements.each do |req|
+      detailed = client.get_requirement('Juniper_SRX_Services_Gateway_ALG', '3', '3', req.id)
+      complete_requirements << detailed
+      sleep 0.1 # Be respectful to the API
+    end
+- lang: Ruby
+  label: Filter STIGs from mixed list
+  source: "# The listAllDocuments endpoint returns both STIGs and SRGs\nall_docs =
+    client.list_all_documents\n\n# Filter to get only STIGs\nstigs = all_docs.reject
+    { |name, versions| \n  name.include?('Security_Requirements_Guide') || name.include?('(SRG)')\n}\n\n#
+    Filter to get only SRGs\nsrgs = all_docs.select { |name, versions|\n  name.include?('Security_Requirements_Guide')
+    || name.include?('(SRG)')\n}\n"
 tags:
-  - name: API Documentation
-    description: Self-documenting API root endpoint
-  - name: Documents
-    description: Security Technical Implementation Guides (STIGs) and Security Requirements Guides (SRGs)
-    x-display-name: STIG/SRG Documents
-  - name: RMF Controls
-    description: Risk Management Framework controls (NIST 800-53 rev 4 & 5)
-  - name: CCI
-    description: Control Correlation Identifiers (bridge RMF to implementation)
-  - name: SCAP
-    description: Security Content Automation Protocol documents
-
+- name: API Documentation
+  description: Self-documenting API root endpoint
+- name: Documents
+  description: Security Technical Implementation Guides (STIGs) and Security Requirements
+    Guides (SRGs)
+  x-display-name: STIG/SRG Documents
+- name: RMF Controls
+  description: Risk Management Framework controls (NIST 800-53 rev 4 & 5)
+- name: CCI
+  description: Control Correlation Identifiers (bridge RMF to implementation)
+- name: SCAP
+  description: Security Content Automation Protocol documents
 paths:
-  /:
+  "/":
     get:
       operationId: getApiDocumentation
       summary: Get API documentation
       description: Returns self-documenting schema showing all available endpoints
       tags:
-        - API Documentation
+      - API Documentation
       responses:
         '200':
           description: API endpoint documentation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiDocumentation'
-
-  /stig:
+                "$ref": "#/components/schemas/ApiDocumentation"
+  "/stig":
     get:
       operationId: listAllDocuments
       summary: List all STIGs and SRGs
-      description: |
-        Returns complete list of Security Technical Implementation Guides (STIGs) and 
-        Security Requirements Guides (SRGs). **Note**: These are mixed in one endpoint.
+      description: "Returns complete list of Security Technical Implementation Guides
+        (STIGs) and \nSecurity Requirements Guides (SRGs). **Note**: These are mixed
+        in one endpoint.\n"
       tags:
-        - Documents
+      - Documents
       x-returns-mixed-content: true
-      x-note: "Returns both STIGs and SRGs mixed together. Use name patterns to distinguish"
-      x-rate-limit: "No documented limit, but please be respectful"
+      x-note: Returns both STIGs and SRGs mixed together. Use name patterns to distinguish
+      x-rate-limit: No documented limit, but please be respectful
       responses:
         '200':
           description: Complete list of STIGs and SRGs grouped by document name
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentList'
+                "$ref": "#/components/schemas/DocumentList"
           links:
             GetDocument:
               operationId: getDocument
               description: Get full document details for any STIG/SRG from the list
               parameters:
-                title: '$response.body#/{documentName}/0/name'
-                version: '$response.body#/{documentName}/0/version'
-                release: '$response.body#/{documentName}/0/release'
-
-  /stig/{title}/{version}/{release}:
+                title: "$response.body#/{documentName}/0/name"
+                version: "$response.body#/{documentName}/0/version"
+                release: "$response.body#/{documentName}/0/release"
+  "/stig/{title}/{version}/{release}":
     get:
       operationId: getDocument
       summary: Get STIG or SRG document details
       description: Returns complete document with all requirements
       tags:
-        - Documents
-      x-note: "Returns document with requirement summaries only. Use getRequirement for full control details"
-      x-requirements-structure: "Requirements are returned as an object with V-IDs as keys, not an array"
+      - Documents
+      x-note: Returns document with requirement summaries only. Use getRequirement
+        for full control details
+      x-requirements-structure: Requirements are returned as an object with V-IDs
+        as keys, not an array
       parameters:
-        - name: title
-          in: path
-          required: true
-          description: Document title exactly as it appears in the list endpoint
-          schema:
-            type: string
-            minLength: 1
-            maxLength: 200
-          example: "Juniper_SRX_Services_Gateway_ALG"
-        - name: version
-          in: path
-          required: true
-          description: Major version number of the document
-          schema:
-            type: string
-            pattern: '^\d+$'
-          example: "3"
-        - name: release
-          in: path
-          required: true
-          description: Release number within the version
-          schema:
-            type: string
-            pattern: '^\d+(\.\d+)?$'
-          example: "3"
+      - name: title
+        in: path
+        required: true
+        description: Document title exactly as it appears in the list endpoint
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 200
+        example: Juniper_SRX_Services_Gateway_ALG
+      - name: version
+        in: path
+        required: true
+        description: Major version number of the document
+        schema:
+          type: string
+          pattern: "^\\d+$"
+        example: '3'
+      - name: release
+        in: path
+        required: true
+        description: Release number within the version
+        schema:
+          type: string
+          pattern: "^\\d+(\\.\\d+)?$"
+        example: '3'
       responses:
         '200':
           description: Complete document details with all requirements
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentDetail'
+                "$ref": "#/components/schemas/DocumentDetail"
           links:
             GetRequirement:
               operationId: getRequirement
               description: Get full details for any requirement in this document
               parameters:
-                title: '$request.path.title'
-                version: '$request.path.version'
-                release: '$request.path.release'
-                vuln: '$response.body#/requirements/{index}/id'
-
-  /stig/{title}/{version}/{release}/{vuln}:
+                title: "$request.path.title"
+                version: "$request.path.version"
+                release: "$request.path.release"
+                vuln: "$response.body#/requirements/{index}/id"
+  "/stig/{title}/{version}/{release}/{vuln}":
     get:
       operationId: getRequirement
       summary: Get individual STIG/SRG requirement details
       description: Returns complete details for a specific requirement
       tags:
-        - Documents
-      x-note: "Returns full requirement details including assessment procedures and CCI mappings"
+      - Documents
+      x-note: Returns full requirement details including assessment procedures and
+        CCI mappings
       x-slow-operation: true
       parameters:
-        - name: title
-          in: path
-          required: true
-          description: Document title exactly as it appears in the list endpoint
-          schema:
-            type: string
-            minLength: 1
-            maxLength: 200
-          example: "Juniper_SRX_Services_Gateway_ALG"
-        - name: version
-          in: path
-          required: true
-          description: Major version number of the document
-          schema:
-            type: string
-            pattern: '^\d+$'
-          example: "3"
-        - name: release
-          in: path
-          required: true
-          description: Release number within the version
-          schema:
-            type: string
-            pattern: '^\d+(\.\d+)?$'
-          example: "3"
-        - name: vuln
-          in: path
-          required: true
-          description: Vulnerability/Requirement ID (V-XXXXXX format)
-          schema:
-            type: string
-            pattern: '^V-\d{6}$'
-          example: "V-214518"
+      - name: title
+        in: path
+        required: true
+        description: Document title exactly as it appears in the list endpoint
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 200
+        example: Juniper_SRX_Services_Gateway_ALG
+      - name: version
+        in: path
+        required: true
+        description: Major version number of the document
+        schema:
+          type: string
+          pattern: "^\\d+$"
+        example: '3'
+      - name: release
+        in: path
+        required: true
+        description: Release number within the version
+        schema:
+          type: string
+          pattern: "^\\d+(\\.\\d+)?$"
+        example: '3'
+      - name: vuln
+        in: path
+        required: true
+        description: Vulnerability/Requirement ID (V-XXXXXX format)
+        schema:
+          type: string
+          pattern: "^V-\\d{6}$"
+        example: V-214518
       responses:
         '200':
           description: Complete requirement details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RequirementDetail'
+                "$ref": "#/components/schemas/RequirementDetail"
         '500':
           description: Server error (usually invalid parameter format)
-          x-note: "Returns 500 (not 404) for invalid V-ID format like 'V-INVALID'"
+          x-note: Returns 500 (not 404) for invalid V-ID format like 'V-INVALID'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
-  /rmf/4:
+                "$ref": "#/components/schemas/Error"
+  "/rmf/4":
     get:
       operationId: listRmfControlsV4
       summary: List RMF revision 4 controls
-      description: Returns all Risk Management Framework revision 4 controls with titles
+      description: Returns all Risk Management Framework revision 4 controls with
+        titles
       tags:
-        - RMF Controls
+      - RMF Controls
       responses:
         '200':
           description: Complete list of RMF rev 4 controls
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RmfControlList'
-
-  /rmf/5:
+                "$ref": "#/components/schemas/RmfControlList"
+  "/rmf/5":
     get:
       operationId: listRmfControlsV5
       summary: List RMF revision 5 controls
-      description: Returns all Risk Management Framework revision 5 controls with titles
+      description: Returns all Risk Management Framework revision 5 controls with
+        titles
       tags:
-        - RMF Controls
+      - RMF Controls
       responses:
         '200':
           description: Complete list of RMF rev 5 controls
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RmfControlList'
-
-  /rmf/4/{control}:
+                "$ref": "#/components/schemas/RmfControlList"
+  "/rmf/4/{control}":
     get:
       operationId: getRmfControlV4
       summary: Get RMF revision 4 control details
       description: Returns complete RMF control details including CCI mappings
       tags:
-        - RMF Controls
+      - RMF Controls
       parameters:
-        - name: control
-          in: path
-          required: true
-          description: RMF control identifier (family-number format)
-          schema:
-            type: string
-            pattern: '^[A-Z]+-\d+$'
-          example: "AC-1"
+      - name: control
+        in: path
+        required: true
+        description: RMF control identifier (family-number format)
+        schema:
+          type: string
+          pattern: "^[A-Z]+-\\d+$"
+        example: AC-1
       responses:
         '200':
           description: Complete RMF control details with CCI mappings
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RmfControlDetail'
-
-  /rmf/5/{control}:
+                "$ref": "#/components/schemas/RmfControlDetail"
+  "/rmf/5/{control}":
     get:
       operationId: getRmfControlV5
       summary: Get RMF revision 5 control details
       description: Returns complete RMF control details including CCI mappings
       tags:
-        - RMF Controls
+      - RMF Controls
       parameters:
-        - name: control
-          in: path
-          required: true
-          description: RMF control identifier (family-number format)
-          schema:
-            type: string
-            pattern: '^[A-Z]+-\d+$'
-          example: "AC-1"
+      - name: control
+        in: path
+        required: true
+        description: RMF control identifier (family-number format)
+        schema:
+          type: string
+          pattern: "^[A-Z]+-\\d+$"
+        example: AC-1
       responses:
         '200':
           description: Complete RMF control details with CCI mappings
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RmfControlDetail'
-
-  /scap:
+                "$ref": "#/components/schemas/RmfControlDetail"
+  "/scap":
     get:
       operationId: listScapDocuments
       summary: List all SCAP documents
@@ -333,307 +308,308 @@ paths:
         Returns list of Security Content Automation Protocol documents.
         These are automated scanning versions of STIGs.
       tags:
-        - SCAP
+      - SCAP
       responses:
         '200':
           description: List of SCAP documents grouped by name
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentList'
-
-  /scap/{title}/{version}/{release}:
+                "$ref": "#/components/schemas/DocumentList"
+  "/scap/{title}/{version}/{release}":
     get:
       operationId: getScapDocument
       summary: Get SCAP document details
-      description: Returns complete SCAP document with all requirements (same structure as STIG)
+      description: Returns complete SCAP document with all requirements (same structure
+        as STIG)
       tags:
-        - SCAP
+      - SCAP
       parameters:
-        - name: title
-          in: path
-          required: true
-          description: Document title exactly as it appears in the list endpoint
-          schema:
-            type: string
-            minLength: 1
-            maxLength: 200
-          example: "U_MS_Windows_10_V3R2_STIG_SCAP_1-2_Benchmark"
-        - name: version
-          in: path
-          required: true
-          description: Major version number of the document
-          schema:
-            type: string
-            pattern: '^\d+$'
-          example: "3"
-        - name: release
-          in: path
-          required: true
-          description: Release number within the version
-          schema:
-            type: string
-            pattern: '^\d+(\.\d+)?$'
-          example: "2"
+      - name: title
+        in: path
+        required: true
+        description: Document title exactly as it appears in the list endpoint
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 200
+        example: U_MS_Windows_10_V3R2_STIG_SCAP_1-2_Benchmark
+      - name: version
+        in: path
+        required: true
+        description: Major version number of the document
+        schema:
+          type: string
+          pattern: "^\\d+$"
+        example: '3'
+      - name: release
+        in: path
+        required: true
+        description: Release number within the version
+        schema:
+          type: string
+          pattern: "^\\d+(\\.\\d+)?$"
+        example: '2'
       responses:
         '200':
           description: Complete SCAP document details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DocumentDetail'
-
-  /scap/{title}/{version}/{release}/{vuln}:
+                "$ref": "#/components/schemas/DocumentDetail"
+  "/scap/{title}/{version}/{release}/{vuln}":
     get:
       operationId: getScapRequirement
       summary: Get individual SCAP requirement details
-      description: Returns complete details for specific SCAP requirement (same structure as STIG requirement)
+      description: Returns complete details for specific SCAP requirement (same structure
+        as STIG requirement)
       tags:
-        - SCAP
+      - SCAP
       parameters:
-        - name: title
-          in: path
-          required: true
-          description: Document title exactly as it appears in the list endpoint
-          schema:
-            type: string
-            minLength: 1
-            maxLength: 200
-          example: "U_MS_Windows_10_V3R2_STIG_SCAP_1-2_Benchmark"
-        - name: version
-          in: path
-          required: true
-          description: Major version number of the document
-          schema:
-            type: string
-            pattern: '^\d+$'
-          example: "3"
-        - name: release
-          in: path
-          required: true
-          description: Release number within the version
-          schema:
-            type: string
-            pattern: '^\d+(\.\d+)?$'
-          example: "2"
-        - name: vuln
-          in: path
-          required: true
-          description: Vulnerability/Requirement ID (V-XXXXXX format)
-          schema:
-            type: string
-            pattern: '^V-\d{6}$'
-          example: "V-220697"
+      - name: title
+        in: path
+        required: true
+        description: Document title exactly as it appears in the list endpoint
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 200
+        example: U_MS_Windows_10_V3R2_STIG_SCAP_1-2_Benchmark
+      - name: version
+        in: path
+        required: true
+        description: Major version number of the document
+        schema:
+          type: string
+          pattern: "^\\d+$"
+        example: '3'
+      - name: release
+        in: path
+        required: true
+        description: Release number within the version
+        schema:
+          type: string
+          pattern: "^\\d+(\\.\\d+)?$"
+        example: '2'
+      - name: vuln
+        in: path
+        required: true
+        description: Vulnerability/Requirement ID (V-XXXXXX format)
+        schema:
+          type: string
+          pattern: "^V-\\d{6}$"
+        example: V-220697
       responses:
         '200':
           description: Complete SCAP requirement details
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RequirementDetail'
+                "$ref": "#/components/schemas/RequirementDetail"
         '500':
           description: Server error (usually invalid parameter format)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
-  /cci:
+                "$ref": "#/components/schemas/Error"
+  "/cci":
     get:
       operationId: listCcis
       summary: List all Control Correlation Identifiers
       description: Returns complete list of CCIs with their definitions
       tags:
-        - CCI
+      - CCI
       responses:
         '200':
           description: Complete list of CCIs with definitions
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CciList'
-
-  /cci/{item}:
+                "$ref": "#/components/schemas/CciList"
+  "/cci/{item}":
     get:
       operationId: getCciDetails
       summary: Get CCI details with RMF mapping
       description: Returns complete CCI details including RMF control mapping
       tags:
-        - CCI
+      - CCI
       parameters:
-        - name: item
-          in: path
-          required: true
-          description: Control Correlation Identifier (CCI-XXXXXX format)
-          schema:
-            type: string
-            pattern: '^CCI-\d{6}$'
-          example: "CCI-000001"
+      - name: item
+        in: path
+        required: true
+        description: Control Correlation Identifier (CCI-XXXXXX format)
+        schema:
+          type: string
+          pattern: "^CCI-\\d{6}$"
+        example: CCI-000001
       responses:
         '200':
           description: Complete CCI details with RMF control mapping
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CciDetail'
+                "$ref": "#/components/schemas/CciDetail"
           links:
             GetRmfControlV4:
               operationId: getRmfControlV4
               description: Get the mapped RMF revision 4 control
               parameters:
-                control: '$response.body#/assessment_procedures/0/control_identifier'
+                control: "$response.body#/assessment_procedures/0/control_identifier"
             GetRmfControlV5:
               operationId: getRmfControlV5
               description: Get the mapped RMF revision 5 control (if revision 5)
               parameters:
-                control: '$response.body#/assessment_procedures/0/control_identifier'
+                control: "$response.body#/assessment_procedures/0/control_identifier"
         '500':
           description: Server error (usually invalid CCI format)
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-
-security: []  # No authentication required for any endpoints
-
+                "$ref": "#/components/schemas/Error"
+security: []
 components:
-  securitySchemes: {}  # No security schemes - this is a public API
-  
+  securitySchemes: {}
   schemas:
     ApiDocumentation:
       type: object
       description: Self-documenting API schema from root endpoint
       required:
-        - server_api_root
+      - server_api_root
       properties:
         server_api_root:
           type: string
           format: uri
-          example: "https://cyber.trackr.live/api"
+          example: https://cyber.trackr.live/api
       additionalProperties:
         type: string
-        description: "Endpoint path templates (e.g., '/stig/{title}/{version}/{release}')"
-
+        description: Endpoint path templates (e.g., '/stig/{title}/{version}/{release}')
     DocumentList:
       type: object
       description: List of documents grouped by name with version information
       additionalProperties:
         type: array
         items:
-          $ref: '#/components/schemas/DocumentVersion'
-
+          "$ref": "#/components/schemas/DocumentVersion"
     DocumentVersion:
       type: object
       description: Version information for a specific document release
       required:
-        - version
-        - release
-        - link
+      - version
+      - release
+      - link
       properties:
         date:
           type: string
-          description: "File creation/build date in YYYY-MM-DD format (may be empty)"
-          pattern: '^(\d{4}-\d{2}-\d{2}|)$'
-          example: "2024-12-19"
+          description: File creation/build date in YYYY-MM-DD format (may be empty)
+          pattern: "^(\\d{4}-\\d{2}-\\d{2}|)$"
+          example: '2024-12-19'
         released:
           type: string
-          description: "Publication/release date in human-readable format (with leading space)"
-          pattern: '^ \d{1,2} \w+ \d{4}$'
+          description: Publication/release date in human-readable format (with leading
+            space)
+          pattern: "^ \\d{1,2} \\w+ \\d{4}$"
           example: " 30 Jan 2025"
         version:
           type: string
-          pattern: '^[Vv]?\d+$'
-          example: "3"
+          pattern: "^[Vv]?\\d+$"
+          example: '3'
         release:
           type: string
-          pattern: '^\d+(\.\d+)?$'
-          example: "3"
+          pattern: "^\\d+(\\.\\d+)?$"
+          example: '3'
         link:
           type: string
-          pattern: '^/(stig|scap)/.+$'
+          pattern: "^/(stig|scap)/.+$"
           example: "/stig/Juniper_SRX_Services_Gateway_ALG/3/3"
-
     DocumentDetail:
       type: object
       description: Complete document details with all requirements
       required:
-        - id
-        - title
-        - description
-        - status
-        - published
-        - requirements
+      - id
+      - title
+      - description
+      - status
+      - published
+      - requirements
       properties:
         id:
           type: string
           minLength: 1
-          example: "Juniper_SRX_SG_ALG_STIG"
+          example: Juniper_SRX_SG_ALG_STIG
         title:
           type: string
           minLength: 1
-          example: "Juniper SRX Services Gateway ALG Security Technical Implementation Guide"
+          example: Juniper SRX Services Gateway ALG Security Technical Implementation
+            Guide
         description:
           type: string
           minLength: 1
         status:
           type: string
-          enum: [accepted, draft, deprecated]
-          example: "accepted"
+          enum:
+          - accepted
+          - draft
+          - deprecated
+          example: accepted
         published:
           type: string
-          description: "Document publication date in YYYY-MM-DD format"
-          pattern: '^\d{4}-\d{2}-\d{2}$'
-          example: "2024-12-19"
+          description: Document publication date in YYYY-MM-DD format
+          pattern: "^\\d{4}-\\d{2}-\\d{2}$"
+          example: '2024-12-19'
         requirements:
           type: object
-          description: "Requirements mapped by V-ID (e.g., V-214518 as key)"
+          description: Requirements mapped by V-ID (e.g., V-214518 as key)
           additionalProperties:
-            $ref: '#/components/schemas/RequirementSummary'
-
+            "$ref": "#/components/schemas/RequirementSummary"
     RequirementSummary:
       type: object
       description: Summary information for a requirement within a document
       required:
-        - title
-        - rule
-        - severity
-        - link
+      - title
+      - rule
+      - severity
+      - link
       properties:
         title:
           type: string
           minLength: 1
         rule:
           type: string
-          pattern: '^SV-\d+r\d+_rule$'
-          example: "SV-214518r997541_rule"
+          pattern: "^SV-\\d+r\\d+_rule$"
+          example: SV-214518r997541_rule
         severity:
           type: string
-          enum: [high, medium, low]
+          enum:
+          - high
+          - medium
+          - low
         link:
           type: string
-
     RequirementDetail:
       type: object
       description: Complete requirement details with implementation guidance
       required:
-        - id
-        - rule
-        - severity
-        - requirement-title
-        - check-text
-        - fix-text
+      - id
+      - rule
+      - severity
+      - requirement-title
+      - check-text
+      - fix-text
       properties:
         id:
           type: string
-          pattern: '^V-\d{6}$'
-          example: "V-214518"
+          pattern: "^V-\\d{6}$"
+          example: V-214518
         rule:
           type: string
-          pattern: '^SV-\d+r\d+_rule$'
-          example: "SV-214518r997541_rule"
+          pattern: "^SV-\\d+r\\d+_rule$"
+          example: SV-214518r997541_rule
         severity:
           type: string
-          enum: [high, medium, low]
+          enum:
+          - high
+          - medium
+          - low
         requirement-title:
           type: string
           minLength: 1
@@ -642,13 +618,16 @@ components:
           minLength: 1
         mitigation-statement:
           anyOf:
-            - type: string
-            - type: "null"
+          - type: string
+          - type: 'null'
         identifiers:
           type: array
           items:
             type: string
-          example: ["V-66003", "SV-80493", "CCI-000213"]
+          example:
+          - V-66003
+          - SV-80493
+          - CCI-000213
         check-text:
           type: string
           minLength: 1
@@ -657,133 +636,136 @@ components:
           minLength: 1
         check-id:
           type: string
-          description: "Check procedure identifier"
+          description: Check procedure identifier
         fix-id:
           type: string
-          description: "Fix procedure identifier"
+          description: Fix procedure identifier
         group:
           type: string
-          description: "Requirement group identifier"
+          description: Requirement group identifier
         version:
           type: string
-          description: "Requirement version"
+          description: Requirement version
         stig:
           type: string
-          description: "Parent STIG identifier"
+          description: Parent STIG identifier
         stig-title:
           type: string
-          description: "Parent STIG title"
+          description: Parent STIG title
         stig-description:
           type: string
-          description: "Parent STIG description"
+          description: Parent STIG description
         stig-published:
           type: string
-          description: "Parent STIG publication date"
+          description: Parent STIG publication date
         stig-status:
           type: string
-          description: "Parent STIG status"
-
+          description: Parent STIG status
     RmfControlDetail:
       type: object
       description: Complete RMF control details with CCI mappings
       required:
-        - number
-        - title
-        - family
-        - baseline
-        - statements
-        - assessment_procedures
+      - number
+      - title
+      - family
+      - baseline
+      - statements
+      - assessment_procedures
       properties:
         number:
           type: string
-          pattern: '^[A-Z]+-\d+$'
-          example: "AC-1"
+          pattern: "^[A-Z]+-\\d+$"
+          example: AC-1
         title:
           type: string
           minLength: 1
-          example: "POLICY AND PROCEDURES"
+          example: POLICY AND PROCEDURES
         family:
           type: string
           minLength: 1
-          example: "ACCESS CONTROL"
+          example: ACCESS CONTROL
         baseline:
           type: array
           items:
             type: string
-            enum: [LOW, MODERATE, HIGH, PRIVACY]
+            enum:
+            - LOW
+            - MODERATE
+            - HIGH
+            - PRIVACY
           minItems: 1
-          example: ["LOW", "MODERATE", "HIGH", "PRIVACY"]
+          example:
+          - LOW
+          - MODERATE
+          - HIGH
+          - PRIVACY
         statements:
           type: string
           minLength: 1
         assessment_procedures:
           type: array
           items:
-            $ref: '#/components/schemas/AssessmentProcedure'
+            "$ref": "#/components/schemas/AssessmentProcedure"
           minItems: 1
-
     AssessmentProcedure:
       type: object
       description: Assessment procedure linking RMF control sub-parts to CCIs
       required:
-        - assessment_procedures
-        - cci
-        - description
+      - assessment_procedures
+      - cci
+      - description
       properties:
         assessment_procedures:
           type: string
-          pattern: '^[A-Z]+-\d+\.\d+$'
-          example: "AC-1.3"
+          pattern: "^[A-Z]+-\\d+\\.\\d+$"
+          example: AC-1.3
         cci:
           type: string
-          pattern: '^CCI-\d{6}$'
-          example: "CCI-000001"
+          pattern: "^CCI-\\d{6}$"
+          example: CCI-000001
         description:
           type: string
           minLength: 1
-
     CciList:
       type: object
       description: Complete list of Control Correlation Identifiers with definitions
       additionalProperties:
         type: string
         minLength: 1
-
     CciDetail:
       type: object
       description: Complete CCI details with RMF control mapping
       required:
-        - cci
-        - cci_definition
-        - rmf
-        - family
-        - name
+      - cci
+      - cci_definition
+      - rmf
+      - family
+      - name
       properties:
         cci:
           type: string
-          pattern: '^CCI-\d{6}$'
-          example: "CCI-000001"
+          pattern: "^CCI-\\d{6}$"
+          example: CCI-000001
         cci_definition:
           type: string
           minLength: 1
         rmf:
           type: string
-          pattern: '^[A-Z]+-\d+$'
-          example: "AC-1"
+          pattern: "^[A-Z]+-\\d+$"
+          example: AC-1
         family:
           type: string
           minLength: 1
-          example: "Access Control"
+          example: Access Control
         name:
           type: string
           minLength: 1
-          example: "Access Control Policy And Procedures"
-
+          example: Access Control Policy And Procedures
     RmfControlList:
       type: object
       description: List of RMF controls with titles
       required:
-        - controls
+      - controls
       properties:
         controls:
           type: object
@@ -791,13 +773,12 @@ components:
           additionalProperties:
             type: string
             minLength: 1
-
     Error:
       type: object
       description: Error response format
       required:
-        - status
-        - title
+      - status
+      - title
       properties:
         type:
           type: string
