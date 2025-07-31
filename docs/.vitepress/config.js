@@ -13,8 +13,9 @@ export default withMermaid(defineConfig({
       securityLevel: 'loose',
       startOnLoad: true,
       flowchart: {
-        htmlLabels: false,
-        useMaxWidth: true
+        htmlLabels: true,
+        useMaxWidth: true,
+        padding: 20
       }
     },
     
@@ -24,6 +25,10 @@ export default withMermaid(defineConfig({
 
     themeConfig: {
       logo: '/logo.svg',
+      
+      outline: {
+        level: [2, 3]
+      },
       
       nav: [
         { text: 'Guide', link: '/guide/' },
@@ -72,11 +77,18 @@ export default withMermaid(defineConfig({
           {
             text: 'Architecture',
             items: [
+              { text: 'System Integration', link: '/development/architecture/system-integration' },
               { text: 'Two-Tier Testing', link: '/development/architecture/two-tier-testing' },
               { text: 'CORS Proxy Solution', link: '/development/architecture/cors-proxy-solution' },
               { text: 'Faraday Migration', link: '/development/architecture/faraday-migration' },
               { text: 'Windows Compatibility', link: '/development/architecture/windows-compatibility' },
               { text: 'Validation Cleanup', link: '/development/architecture/validation-cleanup' }
+            ]
+          },
+          {
+            text: 'Release Process',
+            items: [
+              { text: 'Release Workflow', link: '/development/release-process' }
             ]
           }
         ],

@@ -9,10 +9,15 @@ This section covers development and implementation details for the cyber.trackr.
 
 ## Architecture
 
+- **[System Integration](./architecture/system-integration.md)** - VitePress + Git-cliff + GitHub Actions integration
 - **[Two-Tier Testing](./architecture/two-tier-testing.md)** - Separation of spec validation and behavior testing
 - **[Faraday Migration](./architecture/faraday-migration.md)** - Windows compatibility through HTTP client migration
 - **[Windows Compatibility](./architecture/windows-compatibility.md)** - Cross-platform development considerations
 - **[Validation Cleanup](./architecture/validation-cleanup.md)** - Removing duplicate validation layers
+
+## Release Process
+
+- **[Release Workflow](./release-process.md)** - Complete OpenAPI-first release process with automated changelog generation
 
 ## Key Principles
 
