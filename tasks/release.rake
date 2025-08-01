@@ -71,10 +71,10 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     system('bundle exec rake test:two_stage') or abort('Tests failed - cannot release')
     puts '✓ Two-stage testing complete'
 
-    # Run linting
-    puts 'Running lint checks...'
-    system('bundle exec rubocop') or abort('Lint checks failed - cannot release')
-    puts '✓ Lint checks passed'
+    # Run linting with auto-correction
+    puts 'Running lint checks with auto-correction...'
+    system('bundle exec rubocop --autocorrect') or abort('Lint checks failed - cannot release')
+    puts '✓ Lint checks passed with auto-corrections applied'
 
     # Generate changelog with git-cliff
     generate_changelog_with_git_cliff(new_version)
