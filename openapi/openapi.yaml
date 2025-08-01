@@ -17,7 +17,7 @@ info:
     requirements that **STIGs** implement specifically\n- **V-IDs** can appear in
     both SRG and corresponding STIG (same requirement, different specificity)\n- **SV-IDs**
     are XCCDF rule identifiers with revision tracking across document releases\n"
-  version: 0.9.9
+  version: 1.0.0
   contact:
     name: Community OpenAPI Documentation
     url: https://github.com/mitre/inspec-juniper/tree/main/tools/cyber-trackr-api
