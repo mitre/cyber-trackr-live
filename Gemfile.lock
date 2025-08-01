@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cyber_trackr_live (2.0.0)
+    cyber_trackr_live (0.9.9)
       faraday (~> 2.0)
       faraday-follow_redirects (~> 0.3)
       faraday-multipart (~> 1.0)

@@ -187,7 +187,7 @@ task security: %w[security:dependencies]
 #------------------------------------------------------------------#
 #                    Load Additional Tasks
 #------------------------------------------------------------------#
-Dir['tasks/*.rake'].each { |f| load f }
+# Tasks already loaded via import at top of file
 
 #------------------------------------------------------------------#
 #                    Documentation Tasks

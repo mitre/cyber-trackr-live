@@ -1,6 +1,6 @@
 {
   "name": "cyber-trackr-live-docs",
-  "version": "2.0.0",
+  "version": "0.9.9",
   "private": true,
   "description": "Documentation for cyber-trackr-live API",
   "scripts": {
