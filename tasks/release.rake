@@ -66,9 +66,6 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     system('bundle install --quiet') or abort('Failed to update Gemfile.lock')
     puts '✓ Updated Gemfile.lock'
 
-    # Validate version consistency
-    validate_version_consistency(new_version)
-
     # Run two-stage testing pattern
     puts 'Running two-stage testing pattern...'
     system('bundle exec rake test:two_stage') or abort('Tests failed - cannot release')

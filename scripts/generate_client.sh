@@ -21,6 +21,10 @@ if [ -d "$TEMP_DIR" ]; then
     rm -rf "$TEMP_DIR"
 fi
 
+# Extract version from OpenAPI spec
+API_VERSION=$(grep "^  version:" openapi/openapi.yaml | sed 's/.*: //')
+echo "📋 Using API version: $API_VERSION"
+
 # Generate the client using Docker to temp directory
 echo "📦 Generating client with OpenAPI Generator..."
 docker run --rm \
@@ -30,7 +34,7 @@ docker run --rm \
     -g ruby \
     -o /local/$TEMP_DIR \
     --library=faraday \
-    --additional-properties=gemName=cyber_trackr_client,moduleName=CyberTrackrClient
+    --additional-properties=gemName=cyber_trackr_client,moduleName=CyberTrackrClient,gemVersion=$API_VERSION
 
 echo "✅ Client generation complete"
 echo
