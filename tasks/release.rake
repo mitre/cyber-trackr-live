@@ -280,8 +280,8 @@ namespace :release do # rubocop:disable Metrics/BlockLength
 
       ## Full Changelog
 
-      - [OpenAPI Changes](../../CHANGELOG-OPENAPI.md)
-      - [Ruby Gem Changes](../../CHANGELOG-GEM.md)
+      - [OpenAPI Changes](../reference/changelog-openapi)
+      - [Ruby Gem Changes](../reference/changelog-ruby)
     NOTES
 
     File.write(notes_file, content)
@@ -359,8 +359,8 @@ namespace :release do # rubocop:disable Metrics/BlockLength
 
       ## Full Changelog
 
-      - [OpenAPI Changes](../../CHANGELOG-OPENAPI.md)
-      - [Ruby Gem Changes](../../CHANGELOG-GEM.md)
+      - [OpenAPI Changes](../reference/changelog-openapi)
+      - [Ruby Gem Changes](../reference/changelog-ruby)
     NOTES
 
     # Append additional content
