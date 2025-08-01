@@ -12,6 +12,7 @@ AllCops:
     - 'docs/**/*'
     - 'vendor/**/*'
     - '.bundle/**/*'
+    - 'node_modules/**/*'             # NPM dependencies
     - 'test/fixtures/**/*'
     - 'scripts/debug/**/*'
     - 'examples/**/*'

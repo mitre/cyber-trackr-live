@@ -289,15 +289,20 @@ namespace :release do # rubocop:disable Metrics/BlockLength
   end
 
   # New git-cliff based changelog generation
-  def generate_changelog_with_git_cliff(version)
+  def generate_changelog_with_git_cliff(_version)
     puts 'Generating changelogs with git-cliff...'
-    
+
     # Generate OpenAPI changelog (docs, api, spec related changes)
-    system('git-cliff --include-path "openapi/**" --include-path "docs/**" --include-path "package.json" --include-path "*.md" --output CHANGELOG-OPENAPI.md') or abort('Failed to generate OpenAPI changelog')
+    system('git-cliff --include-path "openapi/**" --include-path "docs/**" ' \
+           '--include-path "package.json" --include-path "*.md" --output CHANGELOG-OPENAPI.md') ||
+      abort('Failed to generate OpenAPI changelog')
     puts '✓ Updated CHANGELOG-OPENAPI.md'
-    
+
     # Generate Ruby gem changelog (lib, test, gem related changes)
-    system('git-cliff --include-path "lib/**" --include-path "test/**" --include-path "*.gemspec" --include-path "Gemfile*" --include-path "Rakefile" --include-path "tasks/**" --output CHANGELOG-GEM.md') or abort('Failed to generate gem changelog')
+    system('git-cliff --include-path "lib/**" --include-path "test/**" ' \
+           '--include-path "*.gemspec" --include-path "Gemfile*" ' \
+           '--include-path "Rakefile" --include-path "tasks/**" --output CHANGELOG-GEM.md') ||
+      abort('Failed to generate gem changelog')
     puts '✓ Updated CHANGELOG-GEM.md'
   end
 
@@ -305,59 +310,59 @@ namespace :release do # rubocop:disable Metrics/BlockLength
     notes_dir = 'docs/release-notes'
     FileUtils.mkdir_p(notes_dir)
     notes_file = "#{notes_dir}/v#{version}.md"
-    
+
     # Generate release notes for this version using git-cliff
     system("git-cliff --tag v#{version} --unreleased > #{notes_file}") or abort('Failed to generate release notes')
-    
+
     # Add installation and usage sections to the generated notes
     additional_content = <<~NOTES
 
-## Installation
+      ## Installation
 
-### Ruby Gem
+      ### Ruby Gem
 
-```bash
-gem install cyber_trackr_live -v #{version}
-```
+      ```bash
+      gem install cyber_trackr_live -v #{version}
+      ```
 
-Or add to your Gemfile:
+      Or add to your Gemfile:
 
-```ruby
-gem 'cyber_trackr_live', '~> #{version}'
-```
+      ```ruby
+      gem 'cyber_trackr_live', '~> #{version}'
+      ```
 
-### OpenAPI Documentation
+      ### OpenAPI Documentation
 
-The interactive API documentation is available at:
-- [GitHub Pages](https://mitre.github.io/cyber-trackr-live/)
-- [Raw OpenAPI Spec](https://raw.githubusercontent.com/mitre/cyber-trackr-live/v#{version}/openapi/openapi.yaml)
+      The interactive API documentation is available at:
+      - [GitHub Pages](https://mitre.github.io/cyber-trackr-live/)
+      - [Raw OpenAPI Spec](https://raw.githubusercontent.com/mitre/cyber-trackr-live/v#{version}/openapi/openapi.yaml)
 
-## Usage Example
+      ## Usage Example
 
-```ruby
-require 'cyber_trackr_live'
+      ```ruby
+      require 'cyber_trackr_live'
 
-# Initialize the client
-client = CyberTrackrClient::ApiClient.new
+      # Initialize the client
+      client = CyberTrackrClient::ApiClient.new
 
-# Use the helper for convenience
-helper = CyberTrackrHelper.new
+      # Use the helper for convenience
+      helper = CyberTrackrHelper.new
 
-# List all STIGs
-stigs = helper.list_stigs
-puts "Found \#{stigs.size} STIGs"
+      # List all STIGs
+      stigs = helper.list_stigs
+      puts "Found \#{stigs.size} STIGs"
 
-# Get a complete STIG with all requirements
-complete_stig = helper.fetch_complete_stig('Juniper_SRX_Services_Gateway_ALG', '3', '3')
-puts "STIG has \#{complete_stig[:requirements].size} requirements"
-```
+      # Get a complete STIG with all requirements
+      complete_stig = helper.fetch_complete_stig('Juniper_SRX_Services_Gateway_ALG', '3', '3')
+      puts "STIG has \#{complete_stig[:requirements].size} requirements"
+      ```
 
-## Full Changelog
+      ## Full Changelog
 
-- [OpenAPI Changes](../../CHANGELOG-OPENAPI.md)
-- [Ruby Gem Changes](../../CHANGELOG-GEM.md)
+      - [OpenAPI Changes](../../CHANGELOG-OPENAPI.md)
+      - [Ruby Gem Changes](../../CHANGELOG-GEM.md)
     NOTES
-    
+
     # Append additional content
     File.write(notes_file, File.read(notes_file) + additional_content)
     puts "✓ Created release notes at #{notes_file}"
