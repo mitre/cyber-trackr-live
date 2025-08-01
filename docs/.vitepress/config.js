@@ -5,6 +5,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 export default withMermaid(defineConfig({
     title: 'cyber.trackr.live',
     description: 'OpenAPI specification and Ruby client for cyber.trackr.live API - DISA STIGs, SRGs, RMF controls, CCIs, and SCAP data',
+    base: '/cyber-trackr-live/',
     
     // Mermaid configuration
     mermaid: {
