@@ -6,7 +6,6 @@ PATH
       faraday-follow_redirects (~> 0.3)
       faraday-multipart (~> 1.0)
       marcel (~> 1.0)
-      yard (~> 0.9)
 
 GEM
   remote: https://rubygems.org/
@@ -104,6 +103,7 @@ DEPENDENCIES
   rubocop-ast (~> 1.28)
   simplecov (~> 0.22)
   webmock (~> 3.0)
+  yard (~> 0.9)
 
 BUNDLED WITH
    2.4.22
