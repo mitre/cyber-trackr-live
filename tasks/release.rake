@@ -429,17 +429,26 @@ task :release do
     puts ''
     puts '📦 Monitor the release at: https://github.com/mitre/cyber-trackr-live/actions'
   else
-    # Tag exists, assume we're in GitHub Actions and need to build/push gem
-    puts "Tag #{tag} already exists - proceeding with gem build and push"
+    # Tag exists, we're in GitHub Actions
+    puts "Tag #{tag} already exists - running in GitHub Actions"
+    
+    # Check if we're using OIDC trusted publishing (preferred method)
+    if ENV['GITHUB_ACTIONS'] && ENV['GEM_HOST_API_KEY']
+      puts "✅ OIDC trusted publishing detected - gem publication handled by rubygems/configure-rubygems-credentials"
+      puts "✅ Release process complete!"
+    else
+      # Fallback to manual gem publication if OIDC not available
+      puts "No OIDC detected - proceeding with manual gem build and push"
+      
+      # Build the gem in pkg/ directory
+      FileUtils.mkdir_p('pkg')
+      gem_file = "cyber_trackr_live-#{version}.gem"
+      system("gem build cyber_trackr_live.gemspec -o pkg/#{gem_file}") or abort('Failed to build gem')
 
-    # Build the gem in pkg/ directory
-    FileUtils.mkdir_p('pkg')
-    gem_file = "cyber_trackr_live-#{version}.gem"
-    system("gem build cyber_trackr_live.gemspec -o pkg/#{gem_file}") or abort('Failed to build gem')
+      # Push to RubyGems from pkg/ directory
+      system("gem push pkg/#{gem_file}") or abort('Failed to push gem to RubyGems')
 
-    # Push to RubyGems from pkg/ directory
-    system("gem push pkg/#{gem_file}") or abort('Failed to push gem to RubyGems')
-
-    puts "✅ Published #{gem_file} to RubyGems.org"
+      puts "✅ Published #{gem_file} to RubyGems.org"
+    end
   end
 end
