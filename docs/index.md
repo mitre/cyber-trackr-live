@@ -51,9 +51,9 @@ Our OpenAPI 3.1.1 specification provides the foundation for accessing [cyber.tra
 
 ```mermaid
 graph LR
-    A["cyber.trackr.live<br/>API Service"] --> B["OpenAPI 3.1.1 Specification<br/>📋 Core Project"]
-    B --> C["Client Ecosystem<br/>💎 Ruby, TypeScript, Python, Go"]
-    B --> D["Interactive Documentation<br/>📚 Try-it-out Interface"]
+    A["cyber.trackr.live API Service"] --> B["OpenAPI 3.1.1 Specification"]
+    B --> C["Client Ecosystem"]
+    B --> D["Interactive Documentation"]
     
     style A fill:#dc3545,stroke:#bd2130,stroke-width:2px,color:#ffffff
     style B fill:#007bff,stroke:#0056b3,stroke-width:3px,color:#ffffff
@@ -67,10 +67,10 @@ Choose your path to explore the OpenAPI specification and client ecosystem:
 
 ```mermaid
 graph TD
-    A["🚀 Start Here"] --> B["📋 OpenAPI Specification<br/>Core Project"]
-    A --> C["💎 Ruby Client<br/>Production Ready"]
-    A --> D["🔧 Generate Client<br/>Your Language"]
-    A --> E["📚 Interactive Docs<br/>Try-it-out"]
+    A["Start Here"] --> B["OpenAPI Specification"]
+    A --> C["Ruby Client"]
+    A --> D["Generate Client"]
+    A --> E["Interactive Docs"]
     
     B --> F["Explore Specification"]
     C --> G["Quick Start Guide"]

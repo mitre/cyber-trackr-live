@@ -8,13 +8,13 @@ The cyber.trackr.live project demonstrates **proven patterns that work for ANY O
 
 ```mermaid
 mindmap
-  root((Universal OpenAPI Patterns))
+  root)Universal OpenAPI Patterns(
     Testing
       Two-Tier Architecture
       Spec Validation
       Behavior Testing
       Cross-Platform CI/CD
-    Documentation  
+    Documentation
       CORS-Free Deployment
       Interactive Try-It-Out
       Static Site Hosting

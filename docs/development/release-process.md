@@ -49,7 +49,7 @@ graph TD
 
 4. **Verify trusted publishing is configured** on RubyGems.org:
    - Go to https://rubygems.org/gems/cyber_trackr_live/trusted_publishers
-   - Should show: GitHub Repository: `mitre/cyber-trackr-live`, Workflow: `release.yml`
+   - Should show: GitHub Repository: `mitre/cyber-trackr-live`, Workflow: `release-tag.yml`
 
 ## Release Workflow
 
@@ -119,18 +119,24 @@ Push your commits to GitHub:
 git push origin main
 ```
 
-### 5. Create Tag and Publish
+### 5. Create Tag and Trigger Automated Release
 
-Use our custom release process:
+Use our dual-mode release process (based on proven train-juniper pattern):
 
 ```bash
 bundle exec rake release
 ```
 
-This will:
+**Local Mode** (when tag doesn't exist locally):
 - ✅ Create tag `v{version}`
 - ✅ Push the tag to GitHub
-- ⏭️ Trigger GitHub Actions to build and publish everything
+- ✅ Trigger GitHub Actions workflow
+- ✅ Exit (no gem publication locally)
+
+**GitHub Actions Mode** (when tag exists in CI):
+- ✅ Detect OIDC trusted publishing environment
+- ✅ Skip gem publication (OIDC handles it automatically)
+- ✅ Log completion message
 
 ### 6. Automated Publication
 
@@ -145,6 +151,47 @@ Once the tag is pushed, GitHub Actions will automatically:
 8. Publish to RubyGems.org using trusted publishing (OIDC authentication)
 
 Monitor the release workflow at: https://github.com/mitre/cyber-trackr-live/actions
+
+## First Release vs Ongoing Releases
+
+### First Release Pattern (One-Time Setup)
+
+For the **very first release** of a new gem, manual setup is required:
+
+1. **Manual gem publication**:
+   ```bash
+   gem build cyber_trackr_live.gemspec
+   gem push cyber_trackr_live-1.0.0.gem
+   ```
+
+2. **Set up OIDC trusted publishing**:
+   - Go to https://rubygems.org/profile/oidc/pending_trusted_publishers
+   - Repository URL: `https://github.com/mitre/cyber-trackr-live`
+   - Workflow filename: `release-tag.yml`
+   - Gem name: `cyber_trackr_live`
+   - Click "Create Pending trusted publisher"
+
+3. **After first manual release**, the pending publisher becomes active
+
+### Ongoing Release Pattern (Fully Automated)
+
+For **all subsequent releases**, the process is fully automated:
+
+1. **Prepare release**: `bundle exec rake release:patch`
+2. **Push commits**: `git push origin main`
+3. **Trigger release**: `bundle exec rake release`
+4. **GitHub Actions automatically**:
+   - Publishes gem via OIDC trusted publishing
+   - Creates GitHub Release
+   - Deploys documentation
+   - No manual steps required
+
+### Why This Pattern?
+
+- **Security**: OIDC trusted publishing eliminates need for API keys
+- **Reliability**: Proven pattern used by train-juniper and other projects
+- **No Race Conditions**: Dual-mode logic prevents duplicate gem publication
+- **One-Time Setup**: First release establishes trust, all others automated
 
 ## Version Management
 
@@ -231,6 +278,60 @@ git commit -m "feat: add new endpoint for XYZ"
 - Removing deprecated endpoints
 - Major refactoring
 - Incompatible changes
+
+## GitHub Actions Workflow Details
+
+### Workflow File: `.github/workflows/release-tag.yml`
+
+Our release workflow triggers on tag pushes and follows this sequence:
+
+1. **Environment Setup**:
+   - ✅ Checkout code with full history
+   - ✅ Configure git for GitHub Actions
+   - ✅ Set up Ruby 3.3 with bundler cache
+   - ✅ Install git-cliff for changelog generation
+
+2. **Quality Checks**:
+   - ✅ Run full test suite
+   - ✅ Run security audit with bundler-audit
+   - ✅ Run RuboCop linting
+
+3. **Release Preparation**:
+   - ✅ Extract version from git tag (`v1.0.3` → `1.0.3`)
+   - ✅ Read pre-generated release notes from `docs/release-notes/v{version}.md`
+
+4. **Publication**:
+   - ✅ Create GitHub Release with release notes
+   - ✅ Configure RubyGems credentials via OIDC (`rubygems/configure-rubygems-credentials@v1.0.0`)
+   - ✅ Run `bundle exec rake release` (which detects CI mode and skips duplicate publication)
+
+### OIDC Trusted Publishing Integration
+
+The workflow integrates with RubyGems OIDC trusted publishing:
+
+```yaml
+permissions:
+  contents: write
+  id-token: write  # Required for OIDC trusted publishing
+
+steps:
+  - name: Configure RubyGems credentials
+    uses: rubygems/configure-rubygems-credentials@v1.0.0
+    
+  - name: Build and publish gem
+    run: bundle exec rake release
+```
+
+**How it works**:
+1. `rubygems/configure-rubygems-credentials` automatically publishes the gem using OIDC
+2. Our `rake release` task detects the OIDC environment and skips manual publication
+3. No race conditions - each component has a single responsibility
+
+### Monitoring Releases
+
+- **Live monitoring**: https://github.com/mitre/cyber-trackr-live/actions
+- **Release history**: https://github.com/mitre/cyber-trackr-live/releases
+- **Gem publication**: https://rubygems.org/gems/cyber_trackr_live
 
 ## Troubleshooting
 
