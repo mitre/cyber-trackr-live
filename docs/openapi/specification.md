@@ -307,7 +307,7 @@ We welcome contributions to improve the specification:
 
 - **[OpenAPI Benefits](./benefits.md)** - Why we chose OpenAPI-first development
 - **[Validation & Quality](./validation.md)** - Our professional validation approach
-- **[Client Generation](/clients/generation.md)** - How to generate your own clients
+- **[Client Generation](/clients/generation/overview)** - How to generate your own clients
 - **[Development Guide](/development/openapi-development.md)** - Contributing to the specification
 
 ---

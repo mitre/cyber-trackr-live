@@ -339,7 +339,7 @@ openapi-generator-cli generate -i openapi.yaml -g ruby-test
 
 - **[OpenAPI Specification Details](./specification.md)** - Technical implementation
 - **[Spectral Validation](./validation.md)** - Our quality assurance approach
-- **[Client Generation Guide](/clients/generation.md)** - How to generate your own clients
+- **[Client Generation Guide](/clients/generation/overview)** - How to generate your own clients
 - **[Development Patterns](/development/)** - Apply these patterns to your APIs
 
 ---

@@ -24,29 +24,7 @@ graph LR
 
 **Before:** Organizations struggled with manual STIG downloads, custom parsing, and fragmented compliance tooling.
 
-**Now:** One unified OpenAPI specification provides programmatic access to 1000+ STIGs, 300+ SRGs, and 3000+ CCIs.
-
-## Our Official Partnership
-
-```mermaid
-graph LR
-    A[cyber.trackr.live<br/>Live API Service] --> B[OpenAPI Specification<br/>This Project]
-    B --> C[Generated Clients<br/>Multiple Languages]
-    B --> D[Interactive Documentation<br/>Try-it-out Interface]
-    
-    style A fill:#dc3545,stroke:#bd2130,stroke-width:2px,color:#ffffff
-    style B fill:#007bff,stroke:#0056b3,stroke-width:2px,color:#ffffff
-    style C fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
-    style D fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
-```
-
-We are the **official OpenAPI specification project** partnering with [cyber.trackr.live](https://cyber.trackr.live), providing:
-
-- 📋 **OpenAPI 3.1.1 specification** - Single source of truth for all endpoints
-- 💎 **Multi-language clients** - Ruby (production), TypeScript/Python/Go (planned)
-- 📚 **Interactive documentation** - Try-it-out functionality with CORS-free deployment
-- 🔧 **Developer ecosystem** - Testing frameworks, patterns, and tools
-- 📖 **Universal patterns** - Approaches applicable to any OpenAPI project
+**Now:** One unified OpenAPI specification provides programmatic access to 1000+ STIGs, 300+ SRGs, and 3000+ CCIs from [cyber.trackr.live](/project/collaboration).
 
 ## Technical Architecture
 
@@ -140,6 +118,6 @@ graph TD
 - 📚 **Documentation**: Comprehensive guides and examples throughout this site
 - 🐛 **Issues**: [GitHub Issues](https://github.com/mitre/cyber-trackr-live/issues) for bug reports and feature requests
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/mitre/cyber-trackr-live/discussions) for questions and ideas
-- 🔗 **Partnership**: [cyber.trackr.live](https://cyber.trackr.live) for the live API service
+- 🤝 **Project Details**: [Learn about our approach](/project/collaboration) and MITRE's role
 
 Ready to get started? Head to **[Installation](./installation.md)** to set up your development environment!

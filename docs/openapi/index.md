@@ -191,7 +191,7 @@ graph TB
 Ready to use our OpenAPI specification? Choose your path:
 
 1. **[Use the Ruby Client](/clients/ruby/)** - Production-ready with helper methods
-2. **[Generate Your Own Client](/clients/generation.md)** - Any language you prefer
+2. **[Generate Your Own Client](/clients/generation/overview)** - Any language you prefer
 3. **[Explore the API](/api-reference/)** - Interactive documentation
 4. **[Learn the Patterns](/development/)** - Apply to your own OpenAPI projects
 

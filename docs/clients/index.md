@@ -22,7 +22,13 @@ We plan to support additional languages based on community needs:
 
 ## Generate Your Own Client
 
-Want to use a different language? **[See our comprehensive Client Generation Guide](./generation.md)** for step-by-step instructions on generating clients in TypeScript, Python, Go, Java, and many other languages.
+Want to use a different language? Our **Client Generation Guide** provides step-by-step instructions for generating clients in TypeScript, Python, Go, Java, and many other languages:
+
+- **[Getting Started](./generation/overview.md)** - Why generate clients and basic setup
+- **[Language Commands](./generation/languages.md)** - Ready-to-use generation commands 
+- **[Advanced Configuration](./generation/advanced.md)** - Custom templates and automation
+- **[Usage Examples](./generation/usage.md)** - See generated clients in action
+- **[Reference Guide](./generation/reference.md)** - Troubleshooting and best practices
 
 All clients are generated from the same OpenAPI specification, ensuring consistency and version synchronization across language implementations.
 

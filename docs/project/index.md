@@ -38,16 +38,11 @@ This section contains essential project documentation including:
 ### **Technical Support**
 - **[Known Issues](./known-issues.md)** - Documented issues, workarounds, and solutions
 
+### **Community & Collaboration**
+- **[Project Collaboration](./collaboration.md)** - How this project works with cyber.trackr.live and MITRE's role
+
 ## 🔗 **Related Sections**
 
 - **[Getting Started](/guide/)** - User-focused installation and usage guides
 - **[Development](/development/)** - Technical architecture and development patterns
 - **[Future Plans](/future/)** - Roadmap and API provider guidance
-
-## 🤝 **Community**
-
-This project is developed and maintained by [MITRE Corporation](https://www.mitre.org/) as part of the [Security Automation Framework (SAF)](https://saf.mitre.org/).
-
-- 🐛 **Issues**: [GitHub Issues](https://github.com/mitre/cyber-trackr-live/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/mitre/cyber-trackr-live/discussions)
-- 🔗 **Partnership**: [cyber.trackr.live](https://cyber.trackr.live) API service

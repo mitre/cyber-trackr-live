@@ -33,8 +33,8 @@ features:
     details: Try-it-out functionality that works on GitHub Pages through our CORS proxy solution. Always up-to-date with the specification.
     
   - icon: 🤝
-    title: Official Partnership
-    details: Collaborative project with cyber.trackr.live - we provide the OpenAPI specification and client ecosystem for their API service.
+    title: API Integration
+    details: Comprehensive OpenAPI specification and client ecosystem for the cyber.trackr.live API service. [Learn more about our approach](/project/collaboration).
     
   - icon: 🔧
     title: OpenAPI-First Development
@@ -45,9 +45,9 @@ features:
     details: No authentication required - immediate access to comprehensive DISA compliance data and 87 SCAP documents.
 ---
 
-## OpenAPI Specification Partnership
+## OpenAPI-First Architecture
 
-Our OpenAPI 3.1.1 specification provides the foundation for accessing [cyber.trackr.live](https://cyber.trackr.live) API data. [Learn more about our partnership](./guide/) and how the specification drives the entire client ecosystem.
+Our OpenAPI 3.1.1 specification is the foundation for accessing [cyber.trackr.live](https://cyber.trackr.live) API data and drives the entire client ecosystem. [Learn more about our approach](/project/collaboration).
 
 ```mermaid
 graph LR
@@ -115,7 +115,7 @@ Our specification-driven approach provides:
 - 📚 **Documentation**: Comprehensive guides throughout this site
 - 🐛 **Issues**: [GitHub Issues](https://github.com/mitre/cyber-trackr-live/issues) for bugs and features
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/mitre/cyber-trackr-live/discussions) for questions
-- 🏢 **MITRE**: Created and maintained by [MITRE Corporation](https://www.mitre.org/)
+- 🤝 **Project Details**: [Learn about our approach](/project/collaboration) and MITRE's role
 
 ---
 

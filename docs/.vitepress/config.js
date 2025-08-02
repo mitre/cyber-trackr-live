@@ -97,8 +97,17 @@ export default withMermaid(defineConfig({
           {
             text: 'Overview',
             items: [
-              { text: 'All Clients', link: '/clients/' },
-              { text: 'Client Generation', link: '/clients/generation' }
+              { text: 'All Clients', link: '/clients/' }
+            ]
+          },
+          {
+            text: 'Client Generation',
+            items: [
+              { text: 'Getting Started', link: '/clients/generation/overview' },
+              { text: 'Language Commands', link: '/clients/generation/languages' },
+              { text: 'Advanced Configuration', link: '/clients/generation/advanced' },
+              { text: 'Usage Examples', link: '/clients/generation/usage' },
+              { text: 'Reference Guide', link: '/clients/generation/reference' }
             ]
           },
           {
@@ -116,7 +125,8 @@ export default withMermaid(defineConfig({
             items: [
               { text: 'Overview', link: '/project/' },
               { text: 'Project README', link: '/project/readme' },
-              { text: 'Implementation Summary', link: '/project/implementation' }
+              { text: 'Implementation Summary', link: '/project/implementation' },
+              { text: 'Project Collaboration', link: '/project/collaboration' }
             ]
           },
           {
