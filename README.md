@@ -91,7 +91,7 @@ SCAP (Security Content Automation Protocol documents)
 
 ### Prerequisites
 
-- Ruby 3.3+ (see `.ruby-version`)
+- Ruby 3.2+ (see `.ruby-version`)
 - Node.js 22+ (see `.nvmrc`)
 - Docker (for client generation)
 
