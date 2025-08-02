@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reset versions to 1.0.0 for baseline consistency
 - Stabilize release process and exclude node_modules from linting
 - Use correct VitePress paths for changelog links in release notes
+- Add base URL configuration for GitHub Pages deployment
 
 ### MAJOR
 

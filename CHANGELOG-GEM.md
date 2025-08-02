@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0] - 2025-08-02
 
 ### Added
 
@@ -30,6 +30,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update generated client files to match OpenAPI v1.0.0
 - Update versions to 1.0.1 baseline for testing
+
+### Security
+
+- Update thor gem to fix CVE-2025-54314
 
 ### Testing
 
