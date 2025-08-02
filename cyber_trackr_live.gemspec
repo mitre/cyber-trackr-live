@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     'bug_tracker_uri' => 'https://github.com/mitre/cyber-trackr-live/issues',
     'changelog_uri' => 'https://github.com/mitre/cyber-trackr-live/blob/main/CHANGELOG-GEM.md',
     'documentation_uri' => 'https://mitre.github.io/cyber-trackr-live/',
-    'homepage_uri' => 'https://github.com/mitre/cyber-trackr-live',
+    'homepage_uri' => 'https://mitre.github.io/cyber-trackr-live/',
     'source_code_uri' => 'https://github.com/mitre/cyber-trackr-live',
     'rubygems_mfa_required' => 'true'
   }
