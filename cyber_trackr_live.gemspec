@@ -42,7 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'faraday-follow_redirects', '~> 0.3'
   spec.add_dependency 'faraday-multipart', '~> 1.0'
   spec.add_dependency 'marcel', '~> 1.0'
-  spec.add_dependency 'yard', '~> 0.9'
 
   # Development dependencies
   spec.add_development_dependency 'bundler', '~> 2.0'
@@ -53,4 +52,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop-ast', '~> 1.28'
   spec.add_development_dependency 'simplecov', '~> 0.22'
   spec.add_development_dependency 'webmock', '~> 3.0'
+  spec.add_development_dependency 'yard', '~> 0.9'
 end
