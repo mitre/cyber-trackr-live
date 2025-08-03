@@ -50,3 +50,4 @@ RECOVERY*.md
 SESSION*.md
 yarn-debug.log*
 yarn-error.log*
+docs/.vitepress/dist/
