@@ -58,9 +58,9 @@ jobs:
       - name: Read release notes
         id: notes
         run: |
-          if [ -f "docs/release-notes/v${{ steps.version.outputs.VERSION }}.md" ]; then
+          if [ -f "docs/clients/ruby/releases/v${{ steps.version.outputs.VERSION }}.md" ]; then
             echo "NOTES<<EOF" >> $GITHUB_OUTPUT
-            cat "docs/release-notes/v${{ steps.version.outputs.VERSION }}.md" >> $GITHUB_OUTPUT
+            cat "docs/clients/ruby/releases/v${{ steps.version.outputs.VERSION }}.md" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
           else
             echo "NOTES=No release notes found for v${{ steps.version.outputs.VERSION }}" >> $GITHUB_OUTPUT

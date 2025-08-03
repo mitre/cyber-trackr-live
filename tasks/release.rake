@@ -95,7 +95,7 @@ namespace :release do # rubocop:disable Metrics/BlockLength
       'Gemfile.lock',
       'CHANGELOG-OPENAPI.md',
       'CHANGELOG-GEM.md',
-      "docs/release-notes/v#{new_version}.md",
+      "docs/clients/ruby/releases/v#{new_version}.md",
       'docs/.vitepress/dist/'
     ]
     system("git add #{files_to_add.join(' ')}")
@@ -215,7 +215,8 @@ namespace :release do # rubocop:disable Metrics/BlockLength
   end
 
   def create_release_notes(version)
-    notes_dir = 'docs/release-notes'
+    # Release notes go with Ruby gem documentation
+    notes_dir = 'docs/clients/ruby/releases'
     FileUtils.mkdir_p(notes_dir)
 
     notes_file = "#{notes_dir}/v#{version}.md"
@@ -307,7 +308,8 @@ namespace :release do # rubocop:disable Metrics/BlockLength
   end
 
   def create_release_notes_with_git_cliff(version)
-    notes_dir = 'docs/release-notes'
+    # Release notes go with Ruby gem documentation
+    notes_dir = 'docs/clients/ruby/releases'
     FileUtils.mkdir_p(notes_dir)
     notes_file = "#{notes_dir}/v#{version}.md"
 
