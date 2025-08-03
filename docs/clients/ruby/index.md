@@ -2,9 +2,20 @@
 
 Ruby client library for accessing the cyber.trackr.live API with comprehensive helper methods for STIG workflows.
 
+> **New to the API?** Check out the [API Getting Started Guide](../../api-reference/getting-started.md) to understand the data model and endpoints.
+
 ## Installation
 
-See the [Installation Guide](../../guide/installation.md#ruby-gem) for complete setup instructions including Ruby version requirements and troubleshooting.
+```bash
+gem install cyber_trackr_live
+```
+
+Or add to your Gemfile:
+```ruby
+gem 'cyber_trackr_live'
+```
+
+**Requirements:** Ruby 3.2+ (see `.ruby-version`)
 
 ## Quick Start
 
@@ -33,11 +44,13 @@ The Ruby client consists of two main components:
 - Auto-generated from OpenAPI specification
 - Low-level API access with full type safety
 - Handles authentication, serialization, and HTTP details
+- You could [generate this yourself](../generation/overview.md), but we maintain it for you
 
 ### 2. Helper Methods (`CyberTrackrHelper`)  
 - High-level convenience methods for common workflows
 - Wraps generated client with business logic
 - Provides simplified interfaces for complex operations
+- **Unique value-add** not available in other language clients
 
 ## Key Features
 
@@ -85,7 +98,8 @@ requirements = client.get_requirements('Juniper_SRX_Services_Gateway_ALG', '3', 
 
 - **[Helper Methods](./helper-methods.md)** - Complete reference for convenience methods
 - **[Examples](./examples.md)** - Real-world usage examples and patterns
-- **[Contributing](../../reference/contributing.md)** - How to contribute improvements
+- **[API Documentation](../../api-reference/getting-started.md)** - Understand the underlying API
+- **[Generate Other Clients](../generation/overview.md)** - Create clients for other languages
 
 ## Support
 
