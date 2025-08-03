@@ -2,6 +2,8 @@
 
 Ready-to-use commands for generating API clients in your preferred language. Copy, paste, and customize as needed.
 
+> **After Generating:** Test your client with the examples from our [API Getting Started Guide](../../api-reference/getting-started.md#your-first-api-call).
+
 ## 🌐 **Supported Languages**
 
 ### **✅ Production Ready**

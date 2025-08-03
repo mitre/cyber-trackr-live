@@ -2,6 +2,8 @@
 
 Generate API clients in any language from our OpenAPI 3.1.1 specification. This guide covers everything you need to create production-ready clients for the cyber.trackr.live API.
 
+> **New to the API?** Start with our [API Getting Started Guide](../../api-reference/getting-started.md) to understand the endpoints and data model before generating a client.
+
 ## 🎯 **Why Generate Clients?**
 
 ```mermaid
