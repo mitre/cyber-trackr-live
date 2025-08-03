@@ -10,14 +10,14 @@ hero:
     alt: OpenAPI Specification Logo
   actions:
     - theme: brand
-      text: Explore OpenAPI Spec
-      link: /openapi/
+      text: Start Using the API
+      link: /api-reference/getting-started
     - theme: alt
-      text: Get Started
-      link: /guide/
+      text: Use Ruby Client
+      link: /clients/ruby/
     - theme: alt
-      text: API Reference
-      link: /api-reference/
+      text: Generate a Client
+      link: /clients/generation/overview
 
 features:
   - icon: 📋
@@ -63,33 +63,40 @@ graph LR
 
 ## Getting Started
 
-Choose your path to explore the OpenAPI specification and client ecosystem:
+Choose your path based on what you want to do:
 
 ```mermaid
 graph TD
-    A["Start Here"] --> B["OpenAPI Specification"]
-    A --> C["Ruby Client"]
-    A --> D["Generate Client"]
-    A --> E["Interactive Docs"]
+    A["What do you want to do?"] --> B["Use the API Directly"]
+    A --> C["Use Ruby Gem"]
+    A --> D["Generate Another Client"]
+    A --> E["Contribute"]
     
-    B --> F["Explore Specification"]
-    C --> G["Quick Start Guide"]
-    D --> H["Client Generation"]
-    E --> I["API Reference"]
+    B --> F["API Getting Started Guide"]
+    C --> G["Ruby Client Guide"]
+    D --> H["Client Generation Guide"]
+    E --> I["Development Guide"]
     
     style A fill:#007bff,stroke:#0056b3,stroke-width:2px,color:#ffffff
-    style B fill:#007bff,stroke:#0056b3,stroke-width:2px,color:#ffffff
-    style C fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
-    style D fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
-    style E fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
+    style F fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
+    style G fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
+    style H fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
+    style I fill:#28a745,stroke:#1e7e34,stroke-width:2px,color:#ffffff
 ```
 
-### Primary Paths
+### Choose Your Path
 
-1. **[OpenAPI Specification](/openapi/)** - Explore the core project and specification details
-2. **[Installation Guide](/guide/installation)** - Set up the Ruby client or development environment
-3. **[API Reference](/api-reference/)** - Interactive documentation with try-it-out functionality
-4. **[Client Generation](/clients/)** - Generate clients in TypeScript, Python, Go, and other languages
+#### 🌐 **I want to use the API directly**
+→ **[API Getting Started Guide](/api-reference/getting-started)** - Make your first API call in 30 seconds with curl, JavaScript, Python, or PowerShell examples.
+
+#### 💎 **I want to use the Ruby gem**
+→ **[Ruby Client Guide](/clients/ruby/)** - Install the gem and use helper methods for STIG workflows. Production-ready with extensive examples.
+
+#### 🔧 **I want to generate a client in another language**
+→ **[Client Generation Guide](/clients/generation/overview)** - Generate TypeScript, Python, Go, Java, or 50+ other language clients from our OpenAPI spec.
+
+#### 🤝 **I want to contribute or understand the architecture**
+→ **[Development Guide](/development/)** - Learn about our OpenAPI-first approach, testing strategy, and how to contribute.
 
 ## Why OpenAPI-First Matters
 
@@ -104,10 +111,15 @@ Our specification-driven approach provides:
 
 ## Quick Access
 
-- **[OpenAPI Specification](/openapi/)** - Core project and specification details
-- **[Installation Guide](/guide/installation)** - Set up Ruby client or development environment  
-- **[API Reference](/api-reference/)** - Interactive documentation with try-it-out
-- **[Development Patterns](/development/)** - Architecture and testing approaches
+### For Users
+- **[API Getting Started](/api-reference/getting-started)** - Your first API call
+- **[Ruby Client](/clients/ruby/)** - Production-ready gem with helpers
+- **[Generate Clients](/clients/generation/overview)** - Create clients for any language
+- **[Interactive API Docs](/api-reference/)** - Try endpoints in your browser
+
+### For Contributors
+- **[Development Guide](/development/)** - Architecture and testing approaches
+- **[OpenAPI Specification](/openapi/)** - Core specification details
 - **[Project Information](/project/)** - Contributing, security, and governance
 
 ## Community & Support
