@@ -177,7 +177,15 @@ export default withMermaid(defineConfig({
             ]
           }
         ],
-        '/api-reference/': [], // Will be auto-generated from OpenAPI
+        '/api-reference/': [
+          {
+            text: 'Getting Started',
+            items: [
+              { text: 'Quick Start Guide', link: '/api-reference/getting-started' },
+              { text: 'API Operations', link: '/api-reference/' }
+            ]
+          }
+        ],
         '/reference/': [
           {
             text: 'Changelogs',

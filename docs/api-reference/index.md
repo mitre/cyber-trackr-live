@@ -6,32 +6,24 @@ title: API Operations
 
 # API Operations
 
-The cyber.trackr.live API provides comprehensive access to cybersecurity compliance data including DISA STIGs, SRGs, RMF controls, CCIs, and SCAP documents. All endpoints are publicly accessible with no authentication required.
+The cyber.trackr.live API provides comprehensive access to cybersecurity compliance data including DISA STIGs, SRGs, RMF controls, CCIs, and SCAP documents.
 
-## Quick Start
+## 🚀 Quick Links
 
-### Common Workflows
+- **[Getting Started Guide](./getting-started.md)** - Make your first API call in 30 seconds
+- **Base URL**: `https://cyber.trackr.live/api`
+- **Authentication**: None required (public API)
+- **Response Format**: JSON
 
-1. **List Available STIGs**
-   ```http
-   GET /stig
-   ```
+## Common Endpoints
 
-2. **Get STIG Summary**
-   ```http
-   GET /stig/{title}/{version}/{release}
-   ```
-
-3. **Get Specific Requirement**
-   ```http
-   GET /stig/{title}/{version}/{release}/{vuln_id}
-   ```
-
-4. **Search RMF Controls**
-   ```http
-   GET /rmf/5
-   GET /rmf/5/{control_id}
-   ```
+### Most Used
+```http
+GET /stig                                    # List all STIGs/SRGs
+GET /stig/{title}/{version}/{release}        # Get specific STIG
+GET /rmf/5                                   # List RMF Rev 5 controls
+GET /cci                                     # List all CCIs
+```
 
 ## Endpoint Categories
 
