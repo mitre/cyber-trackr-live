@@ -49,6 +49,7 @@ export default withMermaid(defineConfig({
             items: [
               { text: 'Introduction', link: '/guide/' },
               { text: 'Installation', link: '/guide/installation' },
+              { text: 'Platform Compatibility', link: '/guide/platform-compatibility' },
               { text: 'Quick Start', link: '/guide/quick-start' },
               { text: 'Testing', link: '/guide/testing' }
             ]
@@ -71,25 +72,35 @@ export default withMermaid(defineConfig({
             items: [
               { text: 'Overview', link: '/development/' },
               { text: 'OpenAPI Development', link: '/development/openapi-development' },
-              { text: 'API Testing', link: '/development/api-testing' },
               { text: 'Diagram Color Guide', link: '/development/diagram-color-guide' }
             ]
           },
           {
-            text: 'Architecture',
+            text: 'Testing',
             items: [
-              { text: 'System Integration', link: '/development/architecture/system-integration' },
-              { text: 'Two-Tier Testing', link: '/development/architecture/two-tier-testing' },
-              { text: 'CORS Proxy Solution', link: '/development/architecture/cors-proxy-solution' },
-              { text: 'Faraday Migration', link: '/development/architecture/faraday-migration' },
-              { text: 'Windows Compatibility', link: '/development/architecture/windows-compatibility' },
-              { text: 'Validation Cleanup', link: '/development/architecture/validation-cleanup' }
+              { text: 'Testing Overview', link: '/development/testing/' },
+              { text: 'Two-Tier Testing', link: '/development/testing/two-tier-testing' },
+              { text: 'API Testing Guide', link: '/development/testing/api-testing' }
             ]
           },
           {
             text: 'Release Process',
             items: [
-              { text: 'Release Workflow', link: '/development/release-process' }
+              { text: 'Overview', link: '/development/release-process/' },
+              { text: 'Quick Release Guide', link: '/development/release-process/quick-release' },
+              { text: 'Architecture', link: '/development/release-process/architecture' },
+              { text: 'First Release Setup', link: '/development/release-process/first-release' },
+              { text: 'Development Workflow', link: '/development/release-process/development-workflow' },
+              { text: 'Troubleshooting', link: '/development/release-process/troubleshooting' }
+            ]
+          },
+          {
+            text: 'API Provider Guide',
+            items: [
+              { text: 'Overview', link: '/development/api-provider-guide/' },
+              { text: 'OpenAPI-First Approach', link: '/development/api-provider-guide/openapi-first' },
+              { text: 'Laravel Migration', link: '/development/api-provider-guide/laravel-migration' },
+              { text: 'Static API Generation', link: '/development/api-provider-guide/static-generation' }
             ]
           }
         ],
@@ -116,6 +127,15 @@ export default withMermaid(defineConfig({
               { text: 'Overview', link: '/clients/ruby/' },
               { text: 'Helper Methods', link: '/clients/ruby/helper-methods' },
               { text: 'Examples', link: '/clients/ruby/examples' }
+            ]
+          },
+          {
+            text: 'Ruby Releases',
+            items: [
+              { text: 'v1.0.3 (Latest)', link: '/clients/ruby/releases/v1.0.3' },
+              { text: 'v1.0.2', link: '/clients/ruby/releases/v1.0.2' },
+              { text: 'v1.0.1', link: '/clients/ruby/releases/v1.0.1' },
+              { text: 'v1.0.0', link: '/clients/ruby/releases/v1.0.0' }
             ]
           }
         ],
@@ -157,15 +177,6 @@ export default withMermaid(defineConfig({
             items: [
               { text: 'Overview', link: '/future/' }
             ]
-          },
-          {
-            text: 'API Provider Guide',
-            items: [
-              { text: 'Getting Started', link: '/future/api-provider-guide/' },
-              { text: 'OpenAPI-First Approach', link: '/future/api-provider-guide/openapi-first' },
-              { text: 'Laravel Migration', link: '/future/api-provider-guide/laravel-migration' },
-              { text: 'Static API Generation', link: '/future/api-provider-guide/static-generation' }
-            ]
           }
         ],
         '/patterns/': [
@@ -182,7 +193,8 @@ export default withMermaid(defineConfig({
             text: 'Getting Started',
             items: [
               { text: 'Quick Start Guide', link: '/api-reference/getting-started' },
-              { text: 'API Operations', link: '/api-reference/' }
+              { text: 'API Operations', link: '/api-reference/' },
+              { text: 'Interactive Docs (CORS)', link: '/api-reference/cors-proxy' }
             ]
           }
         ],
