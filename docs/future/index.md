@@ -1,38 +1,36 @@
 # Future Plans & Roadmap
 
-Strategic direction, upcoming features, and guidance for API providers who want to adopt our OpenAPI-first approach.
+Upcoming features and enhancements for the cyber-trackr-live OpenAPI project.
 
-## 🚀 **Project Roadmap**
+## Project Roadmap
 
-### **Current Focus**
-- ✅ **OpenAPI 3.1.1 Specification** - Complete and production-ready
-- ✅ **Ruby Client** - Production-ready with comprehensive helper methods
-- ✅ **Interactive Documentation** - VitePress with working CORS proxy
-- ✅ **Cross-Platform Testing** - Windows, macOS, Linux compatibility
+### Current Focus
+- **OpenAPI 3.1.1 Specification** - Complete and production-ready
+- **Ruby Client** - Production-ready with comprehensive helper methods
+- **Interactive Documentation** - VitePress with working CORS proxy
+- **Cross-Platform Testing** - Windows, macOS, Linux compatibility
 
-### **Near-Term (Next 6 Months)**
-- 🔄 **Additional Language Clients** - TypeScript, Python, Go client generation
-- 📚 **Enhanced Documentation** - More examples and use cases
-- 🧪 **Extended Testing** - Additional API behavior validation
-- 🔧 **Developer Tools** - Improved client generation and tooling
+### Near-Term Plans
+- **Additional Language Clients** - TypeScript, Python, Go client generation
+- **Enhanced Documentation** - More examples and use cases
+- **Extended Testing** - Additional API behavior validation
+- **Developer Tools** - Improved client generation and tooling
 
-### **Medium-Term (6-12 Months)**
-- 🌐 **Community Adoption** - Broader ecosystem integration
-- 📊 **Analytics & Metrics** - Usage tracking and performance monitoring
-- 🔄 **API Versioning** - Support for multiple API versions
-- 🚀 **Performance Optimization** - Caching and response optimization
+### Long-Term Goals
+- **Community Adoption** - Broader ecosystem integration
+- **Analytics & Metrics** - Usage tracking and performance monitoring
+- **API Versioning** - Support for multiple API versions
+- **Performance Optimization** - Caching and response optimization
 
-## 📖 **API Provider Guidance**
+## API Provider Guidance
 
 For organizations running APIs who want to adopt our **OpenAPI-first approach**, we've documented our complete methodology and lessons learned.
 
-### **Available Guides**
-
-#### **[OpenAPI-First Development](./api-provider-guide/)**
-- **[Overview](./api-provider-guide/index.md)** - Introduction to OpenAPI-first methodology
-- **[OpenAPI-First Approach](./api-provider-guide/openapi-first.md)** - Benefits and implementation strategy
-- **[Laravel Migration Guide](./api-provider-guide/laravel-migration.md)** - Specific guidance for Laravel APIs
-- **[Static API Generation](./api-provider-guide/static-generation.md)** - High-performance static API approach
+See the **[API Provider Guide](/development/api-provider-guide/)** in the Development section for:
+- OpenAPI-first methodology
+- Implementation strategies
+- Migration guides
+- Static API generation patterns
 
 ### **Key Benefits for API Providers**
 
