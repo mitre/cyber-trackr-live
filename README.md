@@ -14,12 +14,12 @@ OpenAPI specification and Ruby client for the [cyber.trackr.live](https://cyber.
 This repository contains:
 - **OpenAPI 3.1.1 Specification** - Complete API documentation for cyber.trackr.live
 - **Ruby Client Library** - Generated client with helper utilities
-- **Documentation** - Interactive API docs via Scalar
+- **Documentation** - Interactive API docs via VitePress
 - **Examples** - Usage examples for common workflows
 
 ## 📚 Quick Links
 
-- [API Documentation](https://mitre.github.io/cyber-trackr-live/) - Interactive Scalar docs
+- [API Documentation](https://mitre.github.io/cyber-trackr-live/) - Interactive VitePress docs
 - [Ruby Gem](https://rubygems.org/gems/cyber_trackr_live) - Install with `gem install cyber_trackr_live`
 - [OpenAPI Spec](openapi/openapi.yaml) - OpenAPI 3.1.1 specification
 - [API Changelog](/reference/changelog-openapi) - API specification changes
