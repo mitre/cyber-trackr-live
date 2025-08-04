@@ -99,6 +99,7 @@ export default withMermaid(defineConfig({
             items: [
               { text: 'Overview', link: '/development/api-provider-guide/' },
               { text: 'OpenAPI-First Approach', link: '/development/api-provider-guide/openapi-first' },
+              { text: 'Symfony Migration', link: '/development/api-provider-guide/symfony-migration' },
               { text: 'Laravel Migration', link: '/development/api-provider-guide/laravel-migration' },
               { text: 'Static API Generation', link: '/development/api-provider-guide/static-generation' }
             ]

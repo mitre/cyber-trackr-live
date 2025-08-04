@@ -21,7 +21,7 @@ This guide documents our complete methodology, lessons learned, and practical im
 
 ### **Practical Implementation**
 - Step-by-step migration strategies
-- Platform-specific guidance (Laravel, Rails, etc.)
+- Platform-specific guidance (Symfony, Laravel, Rails, etc.)
 - Static API generation for maximum performance
 - CI/CD pipeline integration
 
@@ -33,13 +33,19 @@ This guide documents our complete methodology, lessons learned, and practical im
 - **Benefits**: Improved consistency, documentation, and client experience
 - **Implementation**: Step-by-step adoption strategy
 
-### **2. [Laravel Migration Guide](./laravel-migration.md)**
+### **2. [Symfony Migration Guide](./symfony-migration.md)**
+- **Symfony-Specific**: Guidance for Symfony API providers (like cyber.trackr.live)
+- **Integration Options**: API Platform, NelmioApiDocBundle, or custom validation
+- **Real Examples**: Based on actual API Platform implementation patterns
+- **Adoption Strategy**: How to integrate existing OpenAPI specifications
+
+### **3. [Laravel Migration Guide](./laravel-migration.md)**
 - **Laravel-Specific**: Detailed guidance for Laravel API providers
 - **Migration Strategies**: Four approaches from simple to comprehensive
 - **Performance Analysis**: Static generation vs dynamic APIs
 - **Real Examples**: Practical implementation with code samples
 
-### **3. [Static API Generation](./static-generation.md)**
+### **4. [Static API Generation](./static-generation.md)**
 - **High-Performance**: Static file generation for read-heavy APIs
 - **Perfect Fit**: When and why to choose static generation
 - **Implementation**: Technical details and tooling
