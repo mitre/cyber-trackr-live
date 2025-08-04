@@ -101,5 +101,4 @@ When adding new dependencies:
 
 ## Related Documentation
 
-- [Faraday Migration Guide](/development/architecture/faraday-migration) - Technical details of the migration
 - [Contributing Guide](/reference/contributing) - Development setup for all platforms

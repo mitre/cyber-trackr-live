@@ -168,4 +168,4 @@ Our goal is to establish **universal patterns** that any OpenAPI project can ado
 
 ---
 
-**Questions about implementing OpenAPI-first development?** Check our [GitHub Discussions](https://github.com/mitre/cyber-trackr-live/discussions) or review the [API Provider Guide](./api-provider-guide/).
+**Questions about implementing OpenAPI-first development?** Check our [GitHub Discussions](https://github.com/mitre/cyber-trackr-live/discussions) or review the [API Provider Guide](/development/api-provider-guide/).

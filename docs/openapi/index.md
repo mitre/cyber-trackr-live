@@ -120,7 +120,7 @@ docker run --rm -v "${PWD}:/local" openapitools/openapi-generator-cli generate \
 
 ### **Contributing to the Specification**
 - **[Development Guide](/development/openapi-development.md)** - How to modify the OpenAPI spec
-- **[Testing Approach](/development/api-testing.md)** - Our two-tier testing methodology
+- **[Testing Approach](/development/testing/api-testing.md)** - Our two-tier testing methodology
 - **[Contributing Guidelines](/project/contributing.md)** - How to contribute improvements
 
 ## 🌟 **Why OpenAPI-First Development Matters**

@@ -65,14 +65,11 @@ npm run docs:build
 
 ### **Core Development**
 - **[OpenAPI Development](./openapi-development.md)** - Working with the specification, validation, and best practices
-- **[API Testing](./api-testing.md)** - Two-tier testing strategy and implementation
-- **[Release Process](./release-process.md)** - Complete automated release workflow
+- **[API Testing](./testing/api-testing.md)** - Two-tier testing strategy and implementation
+- **[Release Process](./release-process/index.md)** - Complete automated release workflow
 
 ### **Architecture Deep Dives**
-- **[System Integration](./architecture/system-integration.md)** - VitePress + Git-cliff + GitHub Actions integration
-- **[Two-Tier Testing](./architecture/two-tier-testing.md)** - Spectral + Ruby testing separation
-- **[Cross-Platform Support](./architecture/windows-compatibility.md)** - Windows, macOS, Linux compatibility
-- **[HTTP Client Strategy](./architecture/faraday-migration.md)** - Faraday for maximum compatibility
+- **[Two-Tier Testing](./testing/two-tier-testing.md)** - Spectral + Ruby testing separation
 
 ## 🔧 **Development Workflows**
 
